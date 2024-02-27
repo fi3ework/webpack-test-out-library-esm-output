@@ -1,3 +1,6 @@
 [submodule "submodules/arco-design"]
 	path = submodules/arco-design
 	url = git@github.com:arco-design/arco-design.git
+[submodule "submodules/redux"]
+	path = submodules/redux
+	url = git@github.com:reduxjs/redux.git
