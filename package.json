@@ -3,14 +3,32 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "packageManager": "pnpm@8.15.3",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "setup": "pnpm run \"/^setup:.*/\"",
+    "setup:self": "pnpm --filter \"@monorepo/pack-*\" run \"/^build:.*/\"",
+    "setup:submodules": "cd ./submodules/jotai && yarn"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
+    "@rspack/cli": "^0.6.0",
+    "@rspack/core": "^0.6.0",
+    "@swc/core": "^1.4.2",
+    "esbuild-loader": "^4.0.3",
+    "fast-glob": "^3.3.2",
+    "swc-loader": "^0.2.6",
+    "terser-webpack-plugin": "^5.3.10",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "webpack": "link:../webpack",
+      "@rspack/core": "link:../rspack/packages/rspack"
+    }
   }
 }
