@@ -1,2 +1,5 @@
 node_modules
 .DS_Store
+packages/pack-redux/dist
+packages/pack-jotai/dist
+packages/pack-arco/dist

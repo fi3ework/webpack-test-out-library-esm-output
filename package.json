@@ -5,17 +5,27 @@
   "main": "index.js",
   "packageManager": "pnpm@8.15.3",
   "scripts": {
-    "setup": "pnpm --filter @monorepo/pack run \"/^build:.*/\""
+    "setup": "pnpm --filter @monorepo/pack-redux run \"/^build:.*/\""
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "@rspack/cli": "^0.5.4",
+    "@rspack/core": "^0.5.5",
+    "@swc/core": "^1.4.2",
     "esbuild-loader": "^4.0.3",
+    "fast-glob": "^3.3.2",
+    "swc-loader": "^0.2.6",
+    "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "webpack": "link:../webpack"
+    }
   }
 }

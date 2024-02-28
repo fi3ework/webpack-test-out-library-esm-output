@@ -1,8 +1,0 @@
-{
-  "name": "@monorepo/pack",
-  "private": true,
-  "scripts": {
-    "build:webpack": "webpack --config webpack.config.ts",
-    "build:rspack": "rspack --config rspack.config.ts"
-  }
-}
