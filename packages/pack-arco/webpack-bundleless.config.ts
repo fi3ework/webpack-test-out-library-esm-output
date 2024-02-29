@@ -4,27 +4,52 @@ const TerserPlugin = require('terser-webpack-plugin')
 const isDev = process.env.NODE_ENV === 'development'
 import fg from 'fast-glob'
 
+// https://github.com/webpack/webpack/issues/15189
+class DisableHarmonyPlugin {
+  // @ts-ignore
+  apply(compiler) {
+    compiler.hooks.compilation.tap(
+      'DisableHarmonyPlugin',
+      // @ts-ignore
+      (compilation, { normalModuleFactory }) => {
+        // @ts-ignore
+        const handler = (parser, parserOptions) => {
+          parserOptions.harmony = false
+        }
+
+        normalModuleFactory.hooks.parser
+          .for('javascript/auto')
+          .tap('HarmonyModulesPlugin', handler)
+        normalModuleFactory.hooks.parser
+          .for('javascript/esm')
+          .tap('HarmonyModulesPlugin', handler)
+      }
+    )
+  }
+}
+
 export default async () => {
   const entries = (
-    await fg(['**/*.ts', '**/*.tsx'], {
-      cwd: path.resolve(__dirname, '../../submodules/arco-design/components'),
-    })
+    await fg(
+      ['./components/**/*.ts', './components/**/*.tsx', 'hooks/**/*.ts'],
+      {
+        cwd: path.resolve(__dirname, '../../submodules/arco-design'),
+      }
+    )
   ).filter((item) => !item.includes('__test__'))
 
   const webpackEntry = entries.reduce((acc, entry) => {
     return {
-      [entry]: path.resolve(
-        __dirname,
-        '../../submodules/arco-design/components/' + entry
-      ),
+      [entry]: path.resolve(__dirname, '../../submodules/arco-design', entry),
       ...acc,
     }
   }, {})
 
   return {
+    // plugins: [new DisableHarmonyPlugin()],
     mode: 'none',
     // devtool: 'source-map',
-    // context: path.resolve(__dirname, '../../submodules/redux'),
+    // context: path.resolve(__dirname, '../../submodules/arco-design'),
     entry: webpackEntry,
     // entry: [
     //   path.resolve(
@@ -35,13 +60,17 @@ export default async () => {
     externals: [
       // @ts-ignore
       ({ context, request }, callback) => {
+        // relative imports
         if (request.startsWith('.')) {
-          // Externalize to a commonjs module using the request path
           return callback(null, ['module ' + request])
         }
 
-        // Continue without externalizing the import
-        callback()
+        // bare imports
+        if (/^[^./].*/.test(request)) {
+          return callback(null, ['module ' + request])
+        }
+
+        return callback()
       },
     ],
     module: {
@@ -94,7 +123,6 @@ export default async () => {
       filename: (pathData) => {
         const fileName = pathData.chunk.name
         return `${fileName.replace(/\.ts[x]$/, '')}.js`
-        // return `[name].mjs`
       },
       libraryTarget: 'module',
       library: {
@@ -102,7 +130,7 @@ export default async () => {
       },
     },
     optimization: {
-      concatenateModules: true,
+      concatenateModules: false,
       mangleExports: false,
       // minimize: true,
       // minimizer: [

@@ -82,6 +82,7 @@ export default async () => {
       ],
     },
     output: {
+      clean: true,
       path: path.resolve(__dirname, 'dist/bundleless-webpack'),
       // chunkFilename: 'chunks/[name].[chunkhash].js',
       // @ts-ignore
