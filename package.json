@@ -5,7 +5,7 @@
   "main": "index.js",
   "packageManager": "pnpm@8.15.3",
   "scripts": {
-    "setup": "pnpm --filter @monorepo/pack-redux run \"/^build:.*/\""
+    "setup": "pnpm --filter \"@monorepo/pack-*\" run \"/^build:.*/\""
   },
   "keywords": [],
   "author": "",

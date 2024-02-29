@@ -4,3 +4,6 @@
 [submodule "submodules/redux"]
 	path = submodules/redux
 	url = git@github.com:reduxjs/redux.git
+[submodule "submodules/jotai"]
+	path = submodules/jotai
+	url = git@github.com:pmndrs/jotai.git
