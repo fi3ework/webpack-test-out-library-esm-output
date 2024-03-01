@@ -5,7 +5,9 @@
   "main": "index.js",
   "packageManager": "pnpm@8.15.3",
   "scripts": {
-    "setup": "pnpm --filter \"@monorepo/pack-*\" run \"/^build:.*/\""
+    "setup": "pnpm run \"/^setup:.*/\"",
+    "setup:self": "pnpm --filter \"@monorepo/pack-*\" run \"/^build:.*/\"",
+    "setup:submodules": "cd ./submodules/jotai && yarn"
   },
   "keywords": [],
   "author": "",
@@ -22,10 +24,5 @@
     "ts-node": "^10.9.2",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
-  },
-  "pnpm": {
-    "overrides": {
-      "webpack": "link:../webpack"
-    }
   }
 }

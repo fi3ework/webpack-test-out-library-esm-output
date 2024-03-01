@@ -3,5 +3,8 @@
   "private": true,
   "scripts": {
     "build:webpack": "webpack --config webpack.config.ts"
+  },
+  "peerDependencies": {
+    "react": "*"
   }
 }
