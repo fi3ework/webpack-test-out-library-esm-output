@@ -1,8 +1,8 @@
 # webpack-library-output
 
-Test repository of using Webpack to build ESM output libraries.
+(WIP) Repository of testing out Webpack to build ESM output libraries.
 
 ```bash
-git clone --recurse-submodules --shallow-submodules git@github.com:fi3ework/webpack-library-output.git
+git clone --recurse-submodules --shallow-submodules git@github.com:fi3bework/webpack-library-output.git
 pnpm run setup
 ```

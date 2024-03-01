@@ -14,7 +14,6 @@ export default {
   },
   module: {
     rules: [
-      // Use esbuild to compile JavaScript & TypeScript
       {
         test: /\.(jsx?|tsx?)$/,
         use: [
@@ -60,7 +59,6 @@ export default {
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
     libraryTarget: 'module',
-    // enabledLibraryTypes: ['module'], // 没用
     library: {
       type: 'module',
     },

@@ -11,7 +11,6 @@ export default {
   },
   module: {
     rules: [
-      // Use esbuild to compile JavaScript & TypeScript
       {
         test: /\.(jsx?|tsx?)$/,
         use: [

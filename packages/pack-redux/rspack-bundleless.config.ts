@@ -21,12 +21,6 @@ export default async () => {
     devtool: false,
     // context: path.resolve(__dirname, '../../submodules/redux'),
     entry: webpackEntry,
-    // entry: [
-    //   path.resolve(
-    //     __dirname,
-    //     '../../submodules/redux/src/bindActionCreators.ts'
-    //   ),
-    // ],
     externals: [
       // @ts-ignore
       ({ context, request }, callback) => {
@@ -59,13 +53,7 @@ export default async () => {
     },
     output: {
       path: path.resolve(__dirname, 'dist/bundleless-rspack'),
-      // chunkFilename: 'chunks/[name].[chunkhash].js',
-      // @ts-ignore
       filename: '[name].js',
-      // filename: (pathData) => {
-      //   const fileName = pathData.chunk.name
-      //   return `${fileName.replace(/\.ts$/, '')}.js`
-      // },
       libraryTarget: 'module',
       library: {
         type: 'module',

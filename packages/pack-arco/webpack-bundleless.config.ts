@@ -51,12 +51,6 @@ export default async () => {
     // devtool: 'source-map',
     // context: path.resolve(__dirname, '../../submodules/arco-design'),
     entry: webpackEntry,
-    // entry: [
-    //   path.resolve(
-    //     __dirname,
-    //     '../../submodules/redux/src/bindActionCreators.ts'
-    //   ),
-    // ],
     externals: [
       // @ts-ignore
       ({ context, request }, callback) => {
@@ -75,7 +69,6 @@ export default async () => {
     ],
     module: {
       rules: [
-        // Use esbuild to compile JavaScript & TypeScript
         {
           test: /\.(jsx?|tsx?)$/,
           use: [
@@ -118,7 +111,6 @@ export default async () => {
     output: {
       clean: true,
       path: path.resolve(__dirname, 'dist/bundleless-webpack'),
-      // chunkFilename: 'chunks/[name].[chunkhash].js',
       // @ts-ignore
       filename: (pathData) => {
         const fileName = pathData.chunk.name
