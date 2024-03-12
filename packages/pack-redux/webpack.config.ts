@@ -53,6 +53,8 @@ export default {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'webpack-dist.mjs',
+    chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
+    chunkFormat: 'module',
     libraryTarget: 'module',
     library: {
       type: 'module',
