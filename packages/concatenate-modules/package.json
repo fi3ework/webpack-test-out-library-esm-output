@@ -1,0 +1,14 @@
+{
+  "name": "@monorepo/pack-jotai",
+  "private": true,
+  "scripts": {
+    "build:esbuild": "esbuild index.js --bundle --outfile=dist/esbuild-dist.js --format=esm",
+    "build:webpack": "webpack --config webpack.config.ts"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
+  "dependencies": {
+    "esbuild": "^0.20.2"
+  }
+}

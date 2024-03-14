@@ -27,7 +27,7 @@
   },
   "pnpm": {
     "overrides": {
-      "__webpack": "link:../webpack"
+      "webpack": "link:../webpack"
     }
   }
 }

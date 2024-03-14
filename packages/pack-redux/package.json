@@ -6,5 +6,8 @@
     "build:webpack-bundleless": "webpack --config webpack-bundleless.config.ts",
     "build:rspack": "rspack --config rspack.config.ts",
     "build:rspack-bundleless": "rspack --config rspack-bundleless.config.ts"
+  },
+  "dependencies": {
+    "es-module-lexer": "^1.4.1"
   }
 }
