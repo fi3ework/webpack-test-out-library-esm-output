@@ -1,6 +1,7 @@
-const cjsVar = require('./cjs-module')
+const cjsVar = require('./cjs-module.js')
 
-export default num = 0
+const num = 0
+export default num
 export const num1 = 1
 export const num2 = 2
 export { cjsVar }
