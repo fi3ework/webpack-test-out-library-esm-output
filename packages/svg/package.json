@@ -1,12 +1,12 @@
 {
-  "name": "@monorepo/conca",
+  "name": "@monorepo/css",
   "private": true,
   "source": "index.js",
   "main": "dist/parcel-dist.js",
   "module": "dist/parcel-module-dist.js",
   "scripts": {
     "build:esbuild": "esbuild index.js --bundle --outfile=dist/esbuild-dist.js --format=esm",
-    "build:webpack": "webpack --config webpack.config.ts"
+    "build:webpack-bundleless": "webpack --config webpack-bundleless.config.ts"
   },
   "peerDependencies": {
     "react": "*"
@@ -14,7 +14,15 @@
   "dependencies": {
     "@parcel/bundler-library": "2.11.1-canary.3166",
     "@parcel/config-default": "^2.12.0",
+    "@svgr/webpack": "^8.1.0",
+    "css-loader": "^6.10.0",
     "esbuild": "^0.20.2",
-    "parcel": "2.0.0-canary.1541"
+    "mini-css-extract-plugin": "^2.8.1",
+    "parcel": "2.0.0-canary.1541",
+    "postcss": "^8.4.38",
+    "postcss-loader": "^8.1.1"
+  },
+  "devDependencies": {
+    "webpack-remove-empty-scripts": "^1.0.3"
   }
 }

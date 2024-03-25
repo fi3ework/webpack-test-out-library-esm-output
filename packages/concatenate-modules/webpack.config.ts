@@ -173,7 +173,7 @@ class PureRuntimePlugin {
 export default {
   plugins: [
     // new PureRuntimePlugin(),
-    // new EsmLibraryPlugin({ type: 'rslib' }),
+    new EsmLibraryPlugin({ type: 'rslib' }),
   ],
   mode: 'none',
   devtool: 'source-map',
@@ -235,8 +235,8 @@ export default {
       // type: 'rslib',
       // type: esmModule,
       // type: new EsmLibraryPlugin('esm'),
-      // type: 'rslib',
-      type: 'module',
+      type: 'rslib',
+      // type: 'commonjs',
     },
   },
   optimization: {

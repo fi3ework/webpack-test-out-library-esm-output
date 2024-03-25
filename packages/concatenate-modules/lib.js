@@ -8,4 +8,8 @@ export function add2() {
   return num + num2
 }
 
+export function unused_add() {
+  return 'unused'
+}
+
 export { num1 }

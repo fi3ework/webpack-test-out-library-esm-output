@@ -1,0 +1,13 @@
+{
+  "name": "@monorepo/pack-redux",
+  "private": true,
+  "scripts": {
+    "build:webpack": "webpack --config webpack.config.ts",
+    "build:webpack-bundleless": "webpack --config webpack-bundleless.config.ts",
+    "build:rspack": "rspack --config rspack.config.ts",
+    "build:rspack-bundleless": "rspack --config rspack-bundleless.config.ts"
+  },
+  "dependencies": {
+    "@rsbuild/core": "^0.4.8"
+  }
+}
