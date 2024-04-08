@@ -173,7 +173,7 @@ class PureRuntimePlugin {
 export default {
   plugins: [
     // new PureRuntimePlugin(),
-    new EsmLibraryPlugin({ type: 'rslib' }),
+    // new EsmLibraryPlugin({ type: 'rslib' }),
   ],
   mode: 'none',
   devtool: 'source-map',
@@ -181,7 +181,9 @@ export default {
     react: 'module react',
   },
   entry: {
-    main2: './index.js',
+    myLib: ['./index.js'],
+    // myLib: ['./index.js', './lib2.js'],
+    // entry: ['./index.js', './lib2.js'],
   },
   module: {
     rules: [
@@ -225,9 +227,10 @@ export default {
     ],
   },
   output: {
+    clean: true,
     // enabledLibraryTypes: [esmModule],
     path: path.resolve(__dirname, 'dist'),
-    filename: 'webpack-dist.mjs',
+    filename: 'webpack-[name]-dist.mjs',
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
     // libraryTarget: 'commonjs',
@@ -235,13 +238,16 @@ export default {
       // type: 'rslib',
       // type: esmModule,
       // type: new EsmLibraryPlugin('esm'),
-      type: 'rslib',
+      // type: 'rslib',
+      type: 'modern-module',
       // type: 'commonjs',
     },
   },
   optimization: {
-    concatenateModules: true,
-    splitChunks: false,
+    // runtimeChunk: 'single',
+    // concatenateModules: true,
+    // concatenateModules: false,
+    // splitChunks: false,
     minimizer: [
       new TerserPlugin({
         // minify: TerserPlugin.swcMinify,
