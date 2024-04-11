@@ -6,6 +6,7 @@ const { ConcatSource, CachedSource } = require('webpack-sources')
 import * as fg from 'fast-glob'
 import { Compiler } from 'webpack'
 import * as JavascriptModulesPlugin from 'webpack/lib/javascript/JavascriptModulesPlugin'
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 type ConcatSource = webpack.sources.ConcatSource
 type Source = webpack.sources.Source
@@ -135,13 +136,13 @@ class BundlelessPlugin {
 }
 
 export default async () => {
-  const entries = await fg(['**/*.ts'], {
-    cwd: path.resolve(__dirname, '../../submodules/redux/src'),
+  const entries = await fg(['*.js'], {
+    cwd: path.resolve(__dirname, './src'),
   })
 
   const webpackEntry = entries.reduce((acc, entry) => {
     return {
-      [entry]: path.resolve(__dirname, '../../submodules/redux/src/' + entry),
+      [entry]: path.resolve(__dirname, './src/' + entry),
       ...acc,
     }
   }, {})
@@ -159,6 +160,10 @@ export default async () => {
     externals: [
       // @ts-ignore
       ({ context, request }, callback) => {
+        if (request.endsWith('.svg')) {
+          return callback()
+        }
+
         if (request.startsWith('.')) {
           // Externalize to a commonjs module using the request path
           return callback(null, 'module ' + request)
@@ -170,6 +175,19 @@ export default async () => {
     ],
     module: {
       rules: [
+        // {
+        //   test: /\.svg$/,
+        //   use: ['@svgr/webpack'],
+        // },
+        {
+          test: /\.svg$/,
+          type: 'asset/resource',
+        },
+        {
+          test: /\.css$/,
+          use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          // type: 'css', // set to 'css/auto' if you want to support '*.module.css' as CSS Module, otherwise set type to 'css'
+        },
         {
           test: /\.(jsx?|tsx?)$/,
           use: [
@@ -200,7 +218,9 @@ export default async () => {
     },
     output: {
       clean: true,
+      publicPath: '//cdn.example.com/assets/', // CDN (same protocol)
       path: path.resolve(__dirname, 'dist/bundleless-webpack'),
+      assetModuleFilename: 'assets/[hash][ext][query]',
       // @ts-ignore
       filename: (pathData) => {
         const fileName = pathData.chunk.name

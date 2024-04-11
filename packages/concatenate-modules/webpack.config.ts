@@ -239,14 +239,14 @@ export default {
       // type: esmModule,
       // type: new EsmLibraryPlugin('esm'),
       // type: 'rslib',
-      type: 'modern-module',
+      type: 'module',
       // type: 'commonjs',
     },
   },
   optimization: {
     // runtimeChunk: 'single',
     // concatenateModules: true,
-    // concatenateModules: false,
+    concatenateModules: false,
     // splitChunks: false,
     minimizer: [
       new TerserPlugin({
