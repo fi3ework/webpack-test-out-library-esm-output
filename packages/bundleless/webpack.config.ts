@@ -136,13 +136,13 @@ class BundlelessPlugin {
 }
 
 export default async () => {
-  const entries = await fg(['*.js'], {
+  const entries = await fg(['**/*.js'], {
     cwd: path.resolve(__dirname, './src'),
   })
 
   const webpackEntry = entries.reduce((acc, entry) => {
     return {
-      [entry]: path.resolve(__dirname, './src/' + entry),
+      [entry]: path.resolve('./src/' + entry),
       ...acc,
     }
   }, {})
@@ -150,21 +150,29 @@ export default async () => {
   return {
     plugins: [
       new webpack.BannerPlugin('// This file is created by rslib'),
-      new BundlelessPlugin(),
+      new webpack.DefinePlugin({
+        // 'import.meta.url': `import.meta.url`,
+      }),
+      // new BundlelessPlugin(),
       //  new DisableHarmonyPlugin()
     ],
     mode: 'none',
+    node: {
+      __dirname: 'node-module',
+    },
     // devtool: 'source-map',
-    // context: path.resolve(__dirname, '../../submodules/redux'),
+    context: path.resolve(__dirname, './src/sub'),
     entry: webpackEntry,
     externals: [
       // @ts-ignore
-      ({ context, request }, callback) => {
+      ({ context, request, contextInfo, getResolve }, callback) => {
         if (request.endsWith('.svg')) {
           return callback()
         }
 
-        if (request.startsWith('.')) {
+        // if (!request.startsWith('.')) {
+        if (!request.includes('.')) {
+          const re = getResolve()
           // Externalize to a commonjs module using the request path
           return callback(null, 'module ' + request)
         }
@@ -174,6 +182,11 @@ export default async () => {
       },
     ],
     module: {
+      parser: {
+        javascript: {
+          importMeta: false,
+        },
+      },
       rules: [
         // {
         //   test: /\.svg$/,
@@ -217,6 +230,7 @@ export default async () => {
       ],
     },
     output: {
+      module: true,
       clean: true,
       publicPath: '//cdn.example.com/assets/', // CDN (same protocol)
       path: path.resolve(__dirname, 'dist/bundleless-webpack'),
@@ -240,6 +254,9 @@ export default async () => {
       // concatenateModules: false,
     },
     resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      },
       extensions: ['.ts', '.tsx', '.js'],
     },
     experiments: {

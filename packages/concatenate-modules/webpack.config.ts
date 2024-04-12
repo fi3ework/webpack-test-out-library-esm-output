@@ -245,8 +245,8 @@ export default {
   },
   optimization: {
     // runtimeChunk: 'single',
-    // concatenateModules: true,
-    concatenateModules: false,
+    concatenateModules: true,
+    // concatenateModules: false,
     // splitChunks: false,
     minimizer: [
       new TerserPlugin({
