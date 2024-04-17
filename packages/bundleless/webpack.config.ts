@@ -137,15 +137,17 @@ class BundlelessPlugin {
 
 export default async () => {
   const entries = await fg(['**/*.js'], {
-    cwd: path.resolve(__dirname, './src'),
+    cwd: './src',
   })
 
   const webpackEntry = entries.reduce((acc, entry) => {
     return {
-      [entry]: path.resolve('./src/' + entry),
+      [entry]: './' + entry,
       ...acc,
     }
   }, {})
+
+  console.log('👾', webpackEntry)
 
   return {
     plugins: [
@@ -161,18 +163,19 @@ export default async () => {
       __dirname: 'node-module',
     },
     // devtool: 'source-map',
-    context: path.resolve(__dirname, './src/sub'),
+    context: path.resolve(__dirname, './src'),
     entry: webpackEntry,
     externals: [
       // @ts-ignore
       ({ context, request, contextInfo, getResolve }, callback) => {
-        if (request.endsWith('.svg')) {
-          return callback()
-        }
+        // if (request.endsWith('.svg')) {
+        //   return callback()
+        // }
 
-        // if (!request.startsWith('.')) {
-        if (!request.includes('.')) {
-          const re = getResolve()
+        console.log('💋', request)
+        if (request.startsWith('.')) {
+          // if (!request.includes('.')) {
+          // const re = getResolve()
           // Externalize to a commonjs module using the request path
           return callback(null, 'module ' + request)
         }
@@ -182,11 +185,11 @@ export default async () => {
       },
     ],
     module: {
-      parser: {
-        javascript: {
-          importMeta: false,
-        },
-      },
+      // parser: {
+      //   javascript: {
+      //     importMeta: false,
+      //   },
+      // },
       rules: [
         // {
         //   test: /\.svg$/,
