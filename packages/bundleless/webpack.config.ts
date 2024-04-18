@@ -7,6 +7,9 @@ import * as fg from 'fast-glob'
 import { Compiler } from 'webpack'
 import * as JavascriptModulesPlugin from 'webpack/lib/javascript/JavascriptModulesPlugin'
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { OriginalSource, RawSource } = require('webpack-sources')
+const Module = require('webpack/lib/Module')
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts')
 
 type ConcatSource = webpack.sources.ConcatSource
 type Source = webpack.sources.Source
@@ -32,106 +35,88 @@ class DisableHarmonyPlugin {
   }
 }
 
+class MySimpleModule extends Module {
+  constructor(request) {
+    super('javascript/auto', null)
+    this.request = request
+    this.buildInfo = {}
+    this.buildMeta = {}
+  }
+
+  identifier() {
+    return './asdfasdf'
+  }
+
+  size(type) {
+    return 42
+  }
+
+  // updateHash(hash, chunkGraph) {
+  //   super.updateHash(hash)
+  // }
+
+  readableIdentifier(requestShortener) {
+    return './asdfasd2222f'
+  }
+
+  build(options, compilation, resolver, fs, callback) {
+    callback()
+  }
+
+  // needBuild(context, callback) {
+  //   return callback(null, true)
+  // }
+
+  getSourceTypes() {
+    return new Set(['javascript'])
+  }
+
+  codeGeneration({
+    runtimeTemplate,
+    moduleGraph,
+    chunkGraph,
+    runtime,
+    concatenationScope,
+  }) {
+    const sources = new Map()
+    sources.set('javascript', new RawSource('// fuck'))
+    return { sources, runtimeRequirements: new Set([]) }
+  }
+}
+
+class ExternalModuleFactoryPlugin {
+  apply(normalModuleFactory) {
+    normalModuleFactory.hooks.factorize.tapAsync(
+      'ExternalModuleFactoryPlugin111',
+      (data, callback) => {
+        // callback()
+        if (data.request.includes('constants')) {
+          return callback(null, new MySimpleModule('./constant'))
+        } else {
+          return callback()
+        }
+
+        // console.log('🙋', data)
+        // return callback(null, new MySimpleModule('./constant'))
+        // // factory.hooks.resolve.tap('ExternalModuleFactoryPlugin', (result) => {
+        //   // if (result) {
+        //   //   result.external = true
+        //   // }
+        //   // return result
+        // })
+      }
+    )
+  }
+}
+
 class BundlelessPlugin {
   apply(compiler: Compiler) {
-    compiler.hooks.compilation.tap('rslib', function (compilation) {
-      const { renderMain, renderStartup, renderModuleContent } =
-        JavascriptModulesPlugin.getCompilationHooks(compilation)
-
-      compilation.hooks.runtimeRequirementInTree
-        .for(webpack.RuntimeGlobals.definePropertyGetters)
-        .tap('RepackTargetPlugin', (chunk) => {
-          // compilation.addRuntimeModule(
-          //   chunk,
-          //   new RepackLoadScriptRuntimeModule(chunk.id ?? undefined)
-          // )
-
-          // Return `true` to make sure Webpack's default load script runtime is not added.
-          return true
-        })
-
-      // renderModuleContent.tap(
-      //   'rslib',
-      //   (moduleSource: ConcatSource, module, renderContext) => {
-      //     const concatSource: ConcatSource = new ConcatSource(moduleSource)
-      //     const webpackDefineSourceChildren = concatSource.getChildren()
-
-      //     // return moduleSource
-      //   }
-      // )
-
-      // generate exports code in the end of the module
-      renderStartup.tap(
-        'rslib',
-        (source: ConcatSource, module, { moduleGraph, chunk }) => {
-          // source
-          const result = new ConcatSource()
-          const exportsInfo = moduleGraph.getExportsInfo(module)
-
-          // const isAsync = moduleGraph.isAsync(module)
-          // if (isAsync) {
-          //   result.add(
-          //     `${RuntimeGlobals.exports} = await ${RuntimeGlobals.exports};\n`
-          //   )
-          // }
-          for (const exportInfo of exportsInfo.orderedExports) {
-            if (!exportInfo.provided) continue
-            //   const varName = `${RuntimeGlobals.exports}${Template.toIdentifier(
-            //     exportInfo.name
-            //   )}`
-            //   result.add(
-            //     `var ${varName} = ${RuntimeGlobals.exports}${propertyAccess([
-            //       /** @type {string} */
-            //       exportInfo.getUsedName(exportInfo.name, chunk.runtime),
-            //     ])};\n`
-            //   )
-            //   exports.push(`${varName} as ${exportInfo.name}`)
-            // }
-            // if (exports.length > 0) {
-            //   result.add(`export { ${exports.join(', ')} };\n`)
-          }
-          return source
-        }
-      )
-
-      renderMain.tap('rslib', (source: ConcatSource, renderContext) => {
-        const sourceChildren = source.getChildren()
-        const [
-          prefixSource1,
-          rawSource1,
-          prefixSource2,
-          cachedSource,
-          rawSource2,
-        ] = sourceChildren
-
-        const realSource: CachedSource = cachedSource as any
-        const possibleChildren = sourceChildren.forEach((child) => {
-          // console.log('👄', child?._source?._children)
-        })
-        // console.log('👄', sourceChildren)
-
-        return source
-        // const webpackDefineSource
-
-        // const q = renderContext.codeGenerationResults.map
-        // console.log('🤯', q)
-
-        //   const x = console.log(
-        //     '😋',
-        //     // x,
-        //     prefixSource1,
-        //     '\n---\n',
-        //     rawSource1,
-        //     '\n---\n',
-        //     prefixSource2,
-        //     '\n---\n',
-        //     cachedSource,
-        //     '\n---\n',
-        //     rawSource2
-        //   )
-        //   // return source + '// 121111'
-      })
-    })
+    compiler.hooks.compile.tap(
+      'RslibExternalPlugin',
+      ({ normalModuleFactory }) => {
+        new ExternalModuleFactoryPlugin().apply(normalModuleFactory)
+      }
+    )
   }
 }
 
@@ -144,6 +129,8 @@ export default async () => {
     return {
       [entry]: './' + entry,
       ...acc,
+      'style.css': './style.css',
+      'theme.less': './theme.less',
     }
   }, {})
 
@@ -151,45 +138,60 @@ export default async () => {
 
   return {
     plugins: [
-      new webpack.BannerPlugin('// This file is created by rslib'),
-      new webpack.DefinePlugin({
-        // 'import.meta.url': `import.meta.url`,
-      }),
+      new RemoveEmptyScriptsPlugin(),
+      // new webpack.BannerPlugin('// This file is created by rslib'),
+      // new webpack.DefinePlugin({
+      //   // 'import.meta.url': `import.meta.url`,
+      // }),
       // new BundlelessPlugin(),
       //  new DisableHarmonyPlugin()
+      new MiniCssExtractPlugin(),
     ],
     mode: 'none',
+    // mode: 'production',
+    // mode: 'development',
     node: {
       __dirname: 'node-module',
     },
     // devtool: 'source-map',
     context: path.resolve(__dirname, './src'),
     entry: webpackEntry,
+    // entry: {
+    //   // 'use-svg.js': './use-svg.js',
+    //   // 'lib2.js': './lib2.js',
+    //   // 'lib2-thing.js': './lib2-thing.js',
+    //   // 'lib.js': './lib.js',
+    //   main: './index.js',
+    //   // 'importMetaUrl.js': './importMetaUrl.js',
+    //   // 'dyn.js': './dyn.js',
+    //   // 'constants.js': './constants.js',
+    //   // 'cjs-module.js': './cjs-module.js',
+    //   // 'cjs-module-2.js': './cjs-module-2.js',
+    //   // 'barrel-constants.js': './barrel-constants.js',
+    //   // 'alias.js': './alias.js',
+    // },
     externals: [
       // @ts-ignore
       ({ context, request, contextInfo, getResolve }, callback) => {
-        // if (request.endsWith('.svg')) {
-        //   return callback()
-        // }
-
-        console.log('💋', request)
-        if (request.startsWith('.')) {
-          // if (!request.includes('.')) {
-          // const re = getResolve()
-          // Externalize to a commonjs module using the request path
+        if (
+          request.startsWith('.') &&
+          contextInfo.issuer &&
+          !request.includes('node_modules') &&
+          !request.includes('.svg')
+        ) {
+          console.log('😌', request)
           return callback(null, 'module ' + request)
         }
 
-        // Continue without externalizing the import
         callback()
       },
     ],
     module: {
-      // parser: {
-      //   javascript: {
-      //     importMeta: false,
-      //   },
-      // },
+      parser: {
+        javascript: {
+          importMeta: false,
+        },
+      },
       rules: [
         // {
         //   test: /\.svg$/,
@@ -198,6 +200,14 @@ export default async () => {
         {
           test: /\.svg$/,
           type: 'asset/resource',
+          generator: {
+            publicPath: 'my-assets/',
+          },
+        },
+        {
+          test: /\.less$/,
+          use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
+          // type: 'css', // set to 'css/auto' if you want to support '*.module.css' as CSS Module, otherwise set type to 'css'
         },
         {
           test: /\.css$/,
@@ -233,6 +243,7 @@ export default async () => {
       ],
     },
     output: {
+      chunkFormat: 'module',
       module: true,
       clean: true,
       publicPath: '//cdn.example.com/assets/', // CDN (same protocol)
@@ -253,7 +264,11 @@ export default async () => {
     },
     optimization: {
       minimize: false,
+      // minimize: true,
       concatenateModules: true,
+      // concatenateModules: false,
+      providedExports: true,
+      usedExports: false,
       // concatenateModules: false,
     },
     resolve: {

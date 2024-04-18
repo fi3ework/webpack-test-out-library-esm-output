@@ -1,3 +1,3 @@
-import num from './constants'
+import num from './component'
 
-export default num
+console.log(num)
