@@ -1,3 +1,5 @@
 import num from './component'
 
-console.log(num)
+const added = num + 1
+
+export default added

@@ -95,15 +95,6 @@ class ExternalModuleFactoryPlugin {
         } else {
           return callback()
         }
-
-        // console.log('🙋', data)
-        // return callback(null, new MySimpleModule('./constant'))
-        // // factory.hooks.resolve.tap('ExternalModuleFactoryPlugin', (result) => {
-        //   // if (result) {
-        //   //   result.external = true
-        //   // }
-        //   // return result
-        // })
       }
     )
   }
@@ -153,37 +144,52 @@ export default async () => {
     node: {
       __dirname: 'node-module',
     },
-    // devtool: 'source-map',
     context: path.resolve(__dirname, './src'),
     entry: webpackEntry,
-    // entry: {
-    //   // 'use-svg.js': './use-svg.js',
-    //   // 'lib2.js': './lib2.js',
-    //   // 'lib2-thing.js': './lib2-thing.js',
-    //   // 'lib.js': './lib.js',
-    //   main: './index.js',
-    //   // 'importMetaUrl.js': './importMetaUrl.js',
-    //   // 'dyn.js': './dyn.js',
-    //   // 'constants.js': './constants.js',
-    //   // 'cjs-module.js': './cjs-module.js',
-    //   // 'cjs-module-2.js': './cjs-module-2.js',
-    //   // 'barrel-constants.js': './barrel-constants.js',
-    //   // 'alias.js': './alias.js',
-    // },
     externals: [
       // @ts-ignore
-      ({ context, request, contextInfo, getResolve }, callback) => {
+      async ({ context, request, contextInfo, getResolve }) => {
+        // console.log('🐷', request, myPath)
+
         if (
-          request.startsWith('.') &&
+          // request.startsWith('.') &&
           contextInfo.issuer &&
           !request.includes('node_modules') &&
           !request.includes('.svg')
         ) {
-          console.log('😌', request)
-          return callback(null, 'module ' + request)
+          const resolve = getResolve({
+            alias: {
+              '@/': './src/',
+            },
+            preferAbsolute: false,
+            preferRelative: true,
+            roots: [context],
+          })
+
+          const resolvedPath = await resolve(context, request)
+
+          let relativeToIssuer = path.relative(
+            path.dirname(contextInfo.issuer),
+            resolvedPath
+          )
+
+          if (
+            !relativeToIssuer.startsWith('.') &&
+            !relativeToIssuer.startsWith('..')
+          ) {
+            relativeToIssuer = './' + relativeToIssuer
+          }
+
+          // console.log('👯‍♀️', context, myPath, contextInfo.issuer + '/')
+          // console.log(
+          //   '💋',
+          //   path.dirname(contextInfo.issuer + '/'),
+          //   relativeToIssuer
+          // )
+          return 'module ' + relativeToIssuer
         }
 
-        callback()
+        return
       },
     ],
     module: {
@@ -199,10 +205,18 @@ export default async () => {
         // },
         {
           test: /\.svg$/,
-          type: 'asset/resource',
-          generator: {
-            publicPath: 'my-assets/',
-          },
+          oneOf: [
+            {
+              type: 'asset/inline',
+              resourceQuery: /inline/,
+            },
+            {
+              type: 'asset/resource',
+              generator: {
+                publicPath: 'my-assets/',
+              },
+            },
+          ],
         },
         {
           test: /\.less$/,
