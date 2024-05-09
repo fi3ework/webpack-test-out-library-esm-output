@@ -118,8 +118,9 @@ export default async () => {
 
   const webpackEntry = entries.reduce((acc, entry) => {
     return {
-      [entry]: './' + entry,
+      'component.js': './component.js',
       ...acc,
+      [entry]: './' + entry,
       'style.css': './style.css',
       'theme.less': './theme.less',
     }
@@ -180,12 +181,7 @@ export default async () => {
             relativeToIssuer = './' + relativeToIssuer
           }
 
-          // console.log('👯‍♀️', context, myPath, contextInfo.issuer + '/')
-          // console.log(
-          //   '💋',
-          //   path.dirname(contextInfo.issuer + '/'),
-          //   relativeToIssuer
-          // )
+          console.log('🙌', relativeToIssuer)
           return 'module ' + relativeToIssuer
         }
 

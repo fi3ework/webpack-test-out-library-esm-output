@@ -1,5 +1,2 @@
-import num from './component'
-
-const added = num + 1
-
-export default added
+import { num } from './component'
+const sum = num + 1

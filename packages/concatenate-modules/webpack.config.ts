@@ -124,38 +124,41 @@ class PureRuntimePlugin {
         renderRequire,
       } = JavascriptModulesPlugin.getCompilationHooks(compilation)
 
-      const { exportDefinitions } =
-        ConcatenatedModule.getCompilationHooks(compilation)
+      // const { exportDefinitions } =
+      //   ConcatenatedModule.getCompilationHooks(compilation)
 
-      exportDefinitions.tap(
+      // exportDefinitions.tap(
+      //   'rslib',
+      //   (source: ConcatSource, defs: Record<string, string>) => {
+      //     source.add('\n\n// rslib: custom export here\n')
+      //     source.add('\n')
+      //     Object.keys(defs).forEach((key) => {
+      //       const finalName = defs[key]
+      //       source.add(`export { ${finalName} as ${key} }\n`)
+      //     })
+      //     source.add('\n')
+      //     return source
+      //   }
+      // )
+
+      renderModuleContent.tap(
         'rslib',
-        (source: ConcatSource, defs: Record<string, string>) => {
-          source.add('\n\n// rslib: custom export here\n')
-          source.add('\n')
-          Object.keys(defs).forEach((key) => {
-            const finalName = defs[key]
-            source.add(`export { ${finalName} as ${key} }\n`)
-          })
-          source.add('\n')
-          return source
+        (moduleSource, module, renderContext) => {
+          module.buildInfo.strict = false
+
+          return moduleSource
+          // source.add('\n\n// rslib: custom export here\n')
+          // source.add('\n// rslib: renderMain\n')
+          // return source
         }
       )
 
-      // renderMain.tap('rslib', (source: ConcatSource, renderContext) => {
-      //   console.log('🧙‍♂️ renderMain')
-      //   source.add('\n\n// rslib: custom export here\n')
-      //   source.add('\n// rslib: renderMain\n')
-      //   return source
-      // })
-
       // renderStartup.tap('rslib', (source: ConcatSource, renderContext) => {
-      //   console.log('🧙‍♂️ renderStartup')
       //   source.add('// rslib: renderStartup')
       //   return source
       // })
 
       // renderRequire.tap('rslib', (source: ConcatSource, renderContext) => {
-      //   console.log('🧙‍♂️ renderRequire')
       //   const result = new webpack.sources.ConcatSource(source)
       //   result.add('\n// rslib: renderRequire\n')
       //   return result.source()
@@ -172,7 +175,7 @@ class PureRuntimePlugin {
 
 export default {
   plugins: [
-    // new PureRuntimePlugin(),
+    new PureRuntimePlugin(),
     // new EsmLibraryPlugin({ type: 'rslib' }),
   ],
   mode: 'none',
@@ -181,7 +184,7 @@ export default {
     react: 'module react',
   },
   entry: {
-    myLib: ['./index.js'],
+    myLib: ['./index.mjs'],
     // myLib: ['./index.js', './lib2.js'],
     // entry: ['./index.js', './lib2.js'],
   },
@@ -228,11 +231,12 @@ export default {
   },
   output: {
     clean: true,
+    iife: false,
     // enabledLibraryTypes: [esmModule],
     path: path.resolve(__dirname, 'dist'),
     filename: 'webpack-[name]-dist.mjs',
-    chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
-    chunkFormat: 'module',
+    // chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
+    // chunkFormat: 'module',
     // libraryTarget: 'commonjs',
     library: {
       // type: 'rslib',
@@ -240,10 +244,12 @@ export default {
       // type: new EsmLibraryPlugin('esm'),
       // type: 'rslib',
       type: 'module',
-      // type: 'commonjs',
+      // type: 'modern-module',
     },
   },
   optimization: {
+    providedExports: true,
+    usedExports: true,
     // runtimeChunk: 'single',
     concatenateModules: true,
     // concatenateModules: false,
