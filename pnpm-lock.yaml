@@ -220,7 +220,7 @@ importers:
         specifier: '*'
         version: 18.2.0
 
-  packages/pack-redux:
+  packages/reexport-ts-type:
     dependencies:
       es-module-lexer:
         specifier: ^1.4.1

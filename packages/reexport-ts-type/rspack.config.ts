@@ -6,7 +6,7 @@ export default defineConfig({
   mode: 'production',
   devtool: 'source-map',
   entry: {
-    main: '../../submodules/redux/src/index.ts',
+    main: './src/index.ts',
   },
   module: {
     rules: [
@@ -29,9 +29,8 @@ export default defineConfig({
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'rspack-dist.mjs',
-    libraryTarget: 'modern-module',
     library: {
-      type: 'module',
+      type: 'modern-module',
     },
   },
   optimization: {

@@ -136,12 +136,12 @@ class BundlelessPlugin {
 
 export default async () => {
   const entries = await fg(['**/*.ts'], {
-    cwd: path.resolve(__dirname, '../../submodules/redux/src'),
+    cwd: path.resolve(__dirname, './src'),
   })
 
   const webpackEntry = entries.reduce((acc, entry) => {
     return {
-      [entry]: path.resolve(__dirname, '../../submodules/redux/src/' + entry),
+      [entry]: path.resolve(__dirname, './src/' + entry),
       ...acc,
     }
   }, {})

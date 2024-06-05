@@ -32,7 +32,7 @@ export default {
   mode: 'none',
   devtool: 'source-map',
   entry: {
-    main: '../../submodules/redux/src/index.ts',
+    main: './src/index.ts',
   },
   module: {
     rules: [
