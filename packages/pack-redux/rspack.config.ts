@@ -1,6 +1,6 @@
-import path from 'path'
+import * as path from 'path'
 import { defineConfig } from '@rspack/cli'
-import rspack from '@rspack/core'
+// import rspack from '@rspack/core'
 
 export default defineConfig({
   mode: 'production',
@@ -29,7 +29,7 @@ export default defineConfig({
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'rspack-dist.mjs',
-    libraryTarget: 'module',
+    libraryTarget: 'modern-module',
     library: {
       type: 'module',
     },

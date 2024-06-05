@@ -27,7 +27,8 @@
   },
   "pnpm": {
     "overrides": {
-      "webpack": "link:../webpack"
+      "webpack": "link:../webpack",
+      "@rspack/core": "link:../rspack/packages/rspack"
     }
   }
 }

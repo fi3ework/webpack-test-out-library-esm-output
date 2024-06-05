@@ -268,7 +268,7 @@ export default async () => {
       // libraryTarget: 'module',
       // libraryTarget: 'commonjs2',
       library: {
-        type: 'module',
+        type: 'modern-module',
         // type: 'commonjs2',
       },
     },

@@ -1,13 +1,15 @@
-import num from './constants'
-import cjsVar from './cjs-module'
+// import num from './constants'
+// import cjsVar from './cjs-module'
 
-num1
+// num1
 
-export { cjsVar }
+// export { cjsVar }
 
-const leaked = 'llllll'
-console.log(leaked)
+// const leaked = 'llllll'
+// console.log(leaked)
 
-export default num
+// export default num
 
-export { leaked }
+// export { leaked }
+
+export const vsdf = 1

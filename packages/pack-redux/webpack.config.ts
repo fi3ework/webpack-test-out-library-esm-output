@@ -11,7 +11,6 @@ class DisableHarmonyPlugin {
       compilation.hooks.runtimeRequirementInTree
         .for(RuntimeGlobals.definePropertyGetters)
         .tap('rslib', (chunk) => {
-          console.log('🧛‍♀️', chunk)
           // compilation.addRuntimeModule(
           //   chunk,
           //   LoadScriptRuntimeModule(
@@ -29,7 +28,7 @@ class DisableHarmonyPlugin {
 }
 
 export default {
-  plugins: [new DisableHarmonyPlugin()],
+  // plugins: [new DisableHarmonyPlugin()],
   mode: 'none',
   devtool: 'source-map',
   entry: {
@@ -37,6 +36,15 @@ export default {
   },
   module: {
     rules: [
+      // ts-loader
+      // {
+      //   test: /\.ts$/,
+      //   loader: 'ts-loader',
+      //   options: {
+      //     transpileOnly: false,
+      //   },
+      // },
+      // swc-loader
       {
         test: /\.(jsx?|tsx?)$/,
         use: [
@@ -50,17 +58,6 @@ export default {
                   syntax: 'typescript',
                   tsx: true,
                 },
-                // minify: {
-                //   compress: false,
-                //   mangle: false,
-                // },
-                // transform: {
-                //   react: {
-                //     runtime: 'automatic',
-                //     development: isDev,
-                //     refresh: isDev,
-                //   },
-                // },
               },
               env: {
                 targets: [
@@ -81,13 +78,14 @@ export default {
     filename: 'webpack-dist.mjs',
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
-    libraryTarget: 'module',
+    // libraryTarget: 'modern-module',
     library: {
-      type: 'module',
+      type: 'modern-module',
     },
   },
   optimization: {
     concatenateModules: true,
+    // concatenateModules: false,
     // mangleExports: false,
     // minimize: true,
     minimizer: [

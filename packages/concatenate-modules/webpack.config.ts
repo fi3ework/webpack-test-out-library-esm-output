@@ -175,7 +175,7 @@ class PureRuntimePlugin {
 
 export default {
   plugins: [
-    new PureRuntimePlugin(),
+    // new PureRuntimePlugin(),
     // new EsmLibraryPlugin({ type: 'rslib' }),
   ],
   mode: 'none',
@@ -185,7 +185,7 @@ export default {
   },
   entry: {
     myLib: ['./index.mjs'],
-    // myLib: ['./index.js', './lib2.js'],
+    // myLib: ['./index.mjs', './lib2.js'],
     // entry: ['./index.js', './lib2.js'],
   },
   module: {
@@ -236,15 +236,17 @@ export default {
     path: path.resolve(__dirname, 'dist'),
     filename: 'webpack-[name]-dist.mjs',
     // chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
+    chunkFormat: 'module',
     // chunkFormat: 'module',
     // libraryTarget: 'commonjs',
+    module: true,
     library: {
       // type: 'rslib',
       // type: esmModule,
       // type: new EsmLibraryPlugin('esm'),
       // type: 'rslib',
-      type: 'module',
-      // type: 'modern-module',
+      // type: 'module',
+      type: 'modern-module',
     },
   },
   optimization: {
@@ -253,7 +255,18 @@ export default {
     // runtimeChunk: 'single',
     concatenateModules: true,
     // concatenateModules: false,
-    // splitChunks: false,
+    splitChunks: {
+      // only split constants.js
+      cacheGroups: {
+        constants: {
+          enforce: true,
+          test: /constants/,
+          priority: 9010,
+          name: 'constants',
+          chunks: 'all',
+        },
+      },
+    },
     minimizer: [
       new TerserPlugin({
         // minify: TerserPlugin.swcMinify,

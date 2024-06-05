@@ -59,6 +59,7 @@ export default async () => {
         type: 'module',
       },
     },
+    target: 'es2022',
     optimization: {
       concatenateModules: true,
       mangleExports: false,
