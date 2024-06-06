@@ -94,6 +94,21 @@ importers:
         specifier: ^9.5.1
         version: 9.5.1(typescript@5.4.2)(webpack@webpack)
 
+  packages/strict-error:
+    dependencies:
+      es-module-lexer:
+        specifier: ^1.4.1
+        version: 1.4.1
+      esbuild-loader:
+        specifier: ^4.0.3
+        version: 4.1.0(webpack@webpack)
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+      ts-loader:
+        specifier: ^9.5.1
+        version: 9.5.1(typescript@5.4.2)(webpack@webpack)
+
 packages:
 
   /@cspotcode/source-map-support@0.8.1:
@@ -1730,6 +1745,10 @@ packages:
     dependencies:
       p-locate: 4.1.0
     dev: true
+
+  /lodash-es@4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: false
 
   /lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}

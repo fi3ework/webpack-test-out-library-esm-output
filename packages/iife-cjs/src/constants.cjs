@@ -1,3 +1,3 @@
-module.exports = typeof localVar;
+module.exports = typeof localVar
 
-console.log();
+console.log()
