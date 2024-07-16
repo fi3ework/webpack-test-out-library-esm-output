@@ -9,24 +9,31 @@ export default {
   mode: 'none',
   devtool: false,
   entry: {
-    main: './src/index.mjs',
+    main: ['./src/index.ts'],
   },
+  // target: ['es2016'],
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.mjs$/,
         exclude: [/node_modules/],
         loader: isRspack ? 'builtin:swc-loader' : 'swc-loader',
         options: {
-          sourceMap: true,
           jsc: {
+            externalHelpers: true,
             parser: {
+              tsx: false,
               syntax: 'typescript',
+              decorators: true,
             },
+            preserveAllComments: true,
+            transform: {
+              legacyDecorator: false,
+              decoratorVersion: '2022-03',
+            },
+            target: 'es2021',
           },
-          env: {
-            targets: ['chrome >= 107'],
-          },
+          isModule: 'unknown',
         },
         type: 'javascript/auto',
       },
@@ -34,6 +41,10 @@ export default {
   },
   output: {
     clean: true,
+    publicPath: '/',
+    pathInfo: false,
+    hashFunction: 'xxhash64',
+    webassemblyModuleFilename: 'static/wasm/[hash].module.wasm',
     module: true,
     path: path.resolve(
       __filename,
@@ -46,8 +57,9 @@ export default {
     },
   },
   optimization: {
-    concatenateModules: true,
     minimize: false,
+    splitChunks: false,
+    concatenateModules: true,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],

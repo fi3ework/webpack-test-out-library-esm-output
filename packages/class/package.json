@@ -1,0 +1,16 @@
+{
+  "name": "@monorepo/reexport-ts-type",
+  "private": true,
+  "scripts": {
+    "build:webpack": "webpack --config rspack.config.mjs",
+    "build:webpack-bundleless": "webpack --config webpack-bundleless.config.mjs",
+    "build:rspack": "rspack --config rspack.config.mjs",
+    "build:rspack-bundleless": "rspack --config rspack-bundleless.config.mjs"
+  },
+  "dependencies": {
+    "@swc/helpers": "^0.5.11",
+    "es-module-lexer": "^1.4.1",
+    "esbuild-loader": "^4.0.3",
+    "ts-loader": "^9.5.1"
+  }
+}

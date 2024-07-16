@@ -14,7 +14,8 @@ export default {
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.mjs$/,
+        type: 'javascript/auto',
         exclude: [/node_modules/],
         loader: isRspack ? 'builtin:swc-loader' : 'swc-loader',
         options: {
@@ -22,6 +23,7 @@ export default {
           jsc: {
             parser: {
               syntax: 'typescript',
+              topLevelAwait: true,
             },
           },
           env: {
@@ -42,6 +44,7 @@ export default {
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
     library: {
+      // type: 'umd',
       type: 'modern-module',
     },
   },
@@ -50,11 +53,15 @@ export default {
     minimize: false,
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.mts'],
   },
-
+  node: {
+    // __dirname: false,
+    __dirname: 'node-module',
+  },
   experiments: isRspack
     ? {
+        topLevelAwait: true,
         outputModule: true,
         rspackFuture: {
           bundlerInfo: {

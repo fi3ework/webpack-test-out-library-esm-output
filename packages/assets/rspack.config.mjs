@@ -46,7 +46,7 @@ export default {
         test: /\.svg$/,
         type: 'asset',
         generator: {
-          publicPath: 'assets/',
+          publicPath: 'assets_sub/',
         },
         parser: {
           dataUrlCondition: {
@@ -68,7 +68,7 @@ export default {
     ],
   },
   output: {
-    publicPath: '/',
+    publicPath: '/pub/',
     clean: true,
     module: true,
     path: path.resolve(

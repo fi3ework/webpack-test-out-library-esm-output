@@ -12,12 +12,12 @@ export default defineConfig({
       js: './',
     },
     dataUriLimit: 0,
+    assetPrefix: '',
   },
   tools: {
     htmlPlugin: false,
     rspack: {
       output: {
-        publicPath: false,
         module: true,
         iife: false,
         library: { type: 'modern-module' },
