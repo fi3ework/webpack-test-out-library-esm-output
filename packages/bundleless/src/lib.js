@@ -1,15 +1,18 @@
+import 'data:text/javascript,export {}'
+
 import num, { num1, num2 } from './constants'
+import { readFileSync } from 'fs'
 
 export function add1() {
   return num + num1
 }
 
 export function add2() {
-  return num + num2
+  return num + num2 + readFileSync
 }
 
 export function unused_add() {
   return 'unused'
 }
 
-export { num1 as my_rename_num1 }
+// export * from './constants'

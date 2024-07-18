@@ -12,16 +12,15 @@ class ImportAdderPlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.compilation.tap('ImportAdderPlugin', (compilation) => {
-      compilation.hooks.succeedModule.tap('ImportAdderPlugin', (module) => {
-        compilation.processModuleDependencies(module, (cb) => {
-          console.log('🦷', module)
-        })
-        // console.log('🔥')
-        // module.useSourceMap = true
-      })
-    })
-
+    // compiler.hooks.compilation.tap('ImportAdderPlugin', (compilation) => {
+    //   compilation.hooks.succeedModule.tap('ImportAdderPlugin', (module) => {
+    //     compilation.processModuleDependencies(module, (cb) => {
+    //       // console.log('🦷', module)
+    //     })
+    //     // console.log('🔥')
+    //     // module.useSourceMap = true
+    //   })
+    // })
     // compiler.hooks.normalModuleFactory.tap(
     //   'ImportAdderPlugin',
     //   (normalModuleFactory) => {
@@ -53,23 +52,22 @@ const getEntries = (entryDir) => {
     })
   )
 
-  console.log('😡', result, path.resolve(__filename, '../my-loader.js'))
+  // console.log('😡', result, path.resolve(__filename, '../my-loader.js'))
 
   return {
-    'barrel-constants': './src/barrel-constants.js',
-    constants: './src/constants.js',
-    // empty: './src/empty.js',
-    lib: './src/lib.js',
+    // 'barrel-constants': ['./src/barrel-constants.js'],
+    // constants: ['./src/constants.js'],
+    lib: ['./src/lib.js'],
   }
   return result
 }
 
 export default {
-  plugins: [
-    new ImportAdderPlugin({
-      importPath: './empty.js',
-    }),
-  ],
+  // plugins: [
+  //   new ImportAdderPlugin({
+  //     importPath: './empty.js',
+  //   }),
+  // ],
   mode: 'none',
   devtool: false,
   entry: getEntries(),
@@ -80,7 +78,7 @@ export default {
         if (data.request.includes('data:text/javascript')) {
           return callback()
         }
-        return callback(null, 'module ' + data.request)
+        return callback(null, data.request)
       }
       callback()
     },
@@ -142,6 +140,7 @@ export default {
     publicPath: '/pub/',
     clean: true,
     module: true,
+    filename: '[name]666.js',
     path: path.resolve(
       __filename,
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
@@ -157,8 +156,13 @@ export default {
     splitChunks: false,
     concatenateModules: true,
     minimize: false,
+    providedExports: true,
+    usedExports: false,
   },
   resolve: {
+    alias: {
+      '@': path.resolve(__filename, '../src'),
+    },
     extensions: ['.ts', '.tsx', '.js'],
   },
   experiments: isRspack

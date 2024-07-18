@@ -2,7 +2,7 @@ module.exports = function loader(source) {
   const callback = this.async()
   // const result = `\nimport 'data:text/javascript,export {}'\n\n` + source
   const result = source
-  console.log('🐲 loader:', result)
+  // console.log('🐲 loader:', result)
   //   return result
 
   callback(null, result)
