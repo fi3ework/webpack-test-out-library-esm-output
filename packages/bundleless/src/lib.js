@@ -1,5 +1,3 @@
-import 'data:text/javascript,export {}'
-
 import num, { num1, num2 } from './constants'
 import { readFileSync } from 'fs'
 

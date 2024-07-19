@@ -1,5 +1,3 @@
-import 'data:text/javascript,export {}'
-
 const num = 0
 export default num
 export const num1 = 1

@@ -55,8 +55,8 @@ const getEntries = (entryDir) => {
   // console.log('😡', result, path.resolve(__filename, '../my-loader.js'))
 
   return {
-    // 'barrel-constants': ['./src/barrel-constants.js'],
-    // constants: ['./src/constants.js'],
+    'barrel-constants': ['./src/barrel-constants.js'],
+    constants: ['./src/constants.js'],
     lib: ['./src/lib.js'],
   }
   return result
