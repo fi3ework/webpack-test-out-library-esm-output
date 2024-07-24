@@ -9,10 +9,16 @@ export default {
   mode: 'none',
   devtool: false,
   entry: {
-    main: './src/index.mjs',
+    main: './src/extra.js',
+    // main: './src/index.mjs',
   },
-  externals: ['@rsbuild/core'],
-  externalsType: 'import',
+  externals: {
+    fs: 'fs',
+    'node:fs': 'node:fs',
+    'node-fs': 'fs2',
+    path: 'module path',
+  },
+  externalsType: 'module-import',
   module: {
     rules: [
       {
@@ -51,6 +57,7 @@ export default {
   optimization: {
     concatenateModules: true,
     minimize: false,
+    moduleIds: 'deterministic',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
