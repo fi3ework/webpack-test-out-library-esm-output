@@ -6,22 +6,16 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
-  target: 'es2020',
   mode: 'none',
   devtool: false,
-  entry: {
-    // main: './src/extra.js',
-    main: './src/index.mjs',
-  },
   externals: {
-    path: 'path node-commonjs',
-    fs: 'fs',
-    'node:fs': 'node:fs',
-    'node-fs': 'fs2',
-    path: 'module path',
+    './c.js': './c.js',
   },
-  externalsType: 'module-import',
-  // externalsType: 'node-commonjs',
+  externalsType: 'node-commonjs',
+  entry: {
+    mainA: './src/a.js',
+    mainB: './src/b.js',
+  },
   module: {
     rules: [
       {
@@ -44,24 +38,23 @@ export default {
     ],
   },
   output: {
-    publicPath: 'https://cdn.example.com/assets/',
+    publicPath: '/',
     clean: true,
     module: true,
     path: path.resolve(
       __filename,
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
-    chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
+    chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     library: {
       type: 'modern-module',
     },
   },
   optimization: {
-    // concatenateModules: false,
+    moduleIds: 'named',
     concatenateModules: true,
     minimize: false,
-    moduleIds: 'named',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],

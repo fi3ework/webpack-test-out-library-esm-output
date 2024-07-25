@@ -1,5 +1,4 @@
 import foo from './foo.js'
-// import bar from './bar.js'
 
 export const debug = async () => {
   const cat1 = await import('fs')
