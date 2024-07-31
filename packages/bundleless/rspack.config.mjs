@@ -6,43 +6,6 @@ import fg from 'fast-glob'
 const isRspack = process.argv[1].split('/').pop().includes('rspack')
 const __filename = fileURLToPath(import.meta.url)
 
-class ImportAdderPlugin {
-  constructor(options) {
-    this.options = options || {}
-  }
-
-  apply(compiler) {
-    // compiler.hooks.compilation.tap('ImportAdderPlugin', (compilation) => {
-    //   compilation.hooks.succeedModule.tap('ImportAdderPlugin', (module) => {
-    //     compilation.processModuleDependencies(module, (cb) => {
-    //       // console.log('🦷', module)
-    //     })
-    //     // console.log('🔥')
-    //     // module.useSourceMap = true
-    //   })
-    // })
-    // compiler.hooks.normalModuleFactory.tap(
-    //   'ImportAdderPlugin',
-    //   (normalModuleFactory) => {
-    //     normalModuleFactory.hooks.parser
-    //       .for('javascript/auto')
-    //       .tap('ImportAdderPlugin', (parser) => {
-    //         parser.hooks.import.tap(
-    //           'ImportAdderPlugin',
-    //           (statement, source) => {
-    //             // if (parser.state.module.resource === this.options.targetModule) {
-    //             // const importStatement = `import '${this.options.importPath}';`
-    //             console.log('💏', statement)
-    //             // parser.state.source = importStatement + '\n' + parser.state.source
-    //             // }
-    //           }
-    //         )
-    //       })
-    //   }
-    // )
-  }
-}
-
 const getEntries = (entryDir) => {
   const files = fg.sync('./src/**/*.js', {})
   const result = Object.fromEntries(
@@ -52,22 +15,18 @@ const getEntries = (entryDir) => {
     })
   )
 
-  // console.log('😡', result, path.resolve(__filename, '../my-loader.js'))
-
   return {
     'barrel-constants': ['./src/barrel-constants.js'],
     constants: ['./src/constants.js'],
+    'some-cjs': ['./src/some-cjs.cjs'],
     lib: ['./src/lib.js'],
+    'no-export': ['./src/no-export.js'],
+    'cjs-export': ['./src/cjs-exports.js'],
   }
   return result
 }
 
 export default {
-  // plugins: [
-  //   new ImportAdderPlugin({
-  //     importPath: './empty.js',
-  //   }),
-  // ],
   mode: 'none',
   devtool: false,
   entry: getEntries(),
@@ -75,9 +34,9 @@ export default {
   externals: [
     (data, callback) => {
       if (data.contextInfo.issuer) {
-        if (data.request.includes('data:text/javascript')) {
-          return callback()
-        }
+        // if (data.request.includes('data:text/javascript')) {
+        //   return callback()
+        // }
         return callback(null, data.request)
       }
       callback()
@@ -140,7 +99,7 @@ export default {
     publicPath: '/pub/',
     clean: true,
     module: true,
-    filename: '[name]666.js',
+    filename: '[name].js',
     path: path.resolve(
       __filename,
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
@@ -149,7 +108,7 @@ export default {
     chunkFormat: 'module',
     library: {
       type: 'modern-module',
-      // type: 'modern-module',
+      // type: 'module',
     },
   },
   optimization: {

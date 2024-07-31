@@ -6,22 +6,15 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
-  target: 'es2020',
   mode: 'none',
   devtool: false,
+  externals: {
+    react: 'react',
+  },
+  externalsType: 'module',
   entry: {
-    // main: './src/extra.js',
     main: './src/index.mjs',
   },
-  externals: {
-    // path: 'path node-commonjs',
-    fs: 'fs',
-    'node:fs': 'node:fs',
-    'node-fs': 'fs233',
-    // path: 'module path',
-  },
-  externalsType: 'module-import',
-  // externalsType: 'node-commonjs',
   module: {
     rules: [
       {
@@ -44,7 +37,6 @@ export default {
     ],
   },
   output: {
-    publicPath: 'https://cdn.example.com/assets/',
     clean: true,
     module: true,
     path: path.resolve(
@@ -54,21 +46,20 @@ export default {
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
     library: {
+      // type: 'module',
       type: 'modern-module',
     },
   },
   optimization: {
-    // concatenateModules: false,
     concatenateModules: true,
     minimize: false,
-    moduleIds: 'named',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
+
   experiments: isRspack
     ? {
-        topLevelAwait: true,
         outputModule: true,
         rspackFuture: {
           bundlerInfo: {

@@ -58,6 +58,27 @@ importers:
         specifier: ^9.5.1
         version: 9.5.1(typescript@5.4.2)(webpack@webpack)
 
+  packages/abcde:
+    dependencies:
+      '@rsbuild/core':
+        specifier: ^0.7.10
+        version: 0.7.10
+      es-module-lexer:
+        specifier: ^1.4.1
+        version: 1.4.1
+      esbuild-loader:
+        specifier: ^4.0.3
+        version: 4.1.0(webpack@webpack)
+      imports-loader:
+        specifier: ^5.0.0
+        version: 5.0.0(webpack@webpack)
+      mini-svg-data-uri:
+        specifier: ^1.4.4
+        version: 1.4.4
+      ts-loader:
+        specifier: ^9.5.1
+        version: 9.5.1(typescript@5.4.2)(webpack@webpack)
+
   packages/assets:
     dependencies:
       '@rsbuild/core':
@@ -179,6 +200,18 @@ importers:
         version: 9.5.1(typescript@5.4.2)(webpack@webpack)
 
   packages/node-shim:
+    dependencies:
+      es-module-lexer:
+        specifier: ^1.4.1
+        version: 1.4.1
+      esbuild-loader:
+        specifier: ^4.0.3
+        version: 4.1.0(webpack@webpack)
+      ts-loader:
+        specifier: ^9.5.1
+        version: 9.5.1(typescript@5.4.2)(webpack@webpack)
+
+  packages/re-export:
     dependencies:
       es-module-lexer:
         specifier: ^1.4.1
