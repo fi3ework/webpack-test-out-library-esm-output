@@ -1,1 +1,3 @@
-console.log(__dirname)
+import { v } from './main.mjs'
+
+console.log(v)

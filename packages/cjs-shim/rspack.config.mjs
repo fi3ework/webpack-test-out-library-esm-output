@@ -7,14 +7,22 @@ const __dirname = path.dirname(__filename)
 
 export default {
   mode: 'none',
+  target: 'node',
   devtool: false,
   entry: {
     main: './src/index.mjs',
   },
+  externalsType: 'commonjs',
   module: {
+    parser: {
+      javascript: {
+        importMeta: false,
+      },
+    },
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.mjs$/,
+        type: 'javascript/auto',
         exclude: [/node_modules/],
         loader: isRspack ? 'builtin:swc-loader' : 'swc-loader',
         options: {
@@ -22,6 +30,7 @@ export default {
           jsc: {
             parser: {
               syntax: 'typescript',
+              topLevelAwait: true,
             },
           },
           env: {
@@ -33,35 +42,35 @@ export default {
     ],
   },
   output: {
-    publicPath: '/',
     clean: true,
-    module: true,
+    // module: true,
     path: path.resolve(
       __filename,
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
-    chunkFormat: 'module',
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
+    chunkFormat: 'module',
     library: {
-      type: 'modern-module',
-      // type: 'module',
+      // type: 'umd',
+      type: 'commonjs',
     },
   },
   optimization: {
     concatenateModules: true,
+    // concatenateModules: false,
     minimize: false,
-    moduleIds: 'named',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.mts'],
   },
-  externals: {
-    path: 'node-commonjs path',
-  },
+  // node: {
+  //   __dirname: 'node-module',
+  //   __filename: 'node-module',
+  // },
   experiments: isRspack
     ? {
         topLevelAwait: true,
-        outputModule: true,
+        // outputModule: true,
         rspackFuture: {
           bundlerInfo: {
             force: false,
@@ -69,6 +78,6 @@ export default {
         },
       }
     : {
-        outputModule: true,
+        // outputModule: true,
       },
 }

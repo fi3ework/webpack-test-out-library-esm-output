@@ -16,12 +16,14 @@ const getEntries = (entryDir) => {
   )
 
   return {
-    'barrel-constants': ['./src/barrel-constants.js'],
-    constants: ['./src/constants.js'],
-    'some-cjs': ['./src/some-cjs.cjs'],
-    lib: ['./src/lib.js'],
-    'no-export': ['./src/no-export.js'],
-    'cjs-export': ['./src/cjs-exports.js'],
+    // 'barrel-constants': ['./src/barrel-constants.js'],
+    // constants: ['./src/constants.js'],
+    // 'some-cjs': ['./src/some-cjs.cjs'],
+    // lib: ['./src/lib.js'],
+    // 'no-export': ['./src/no-export.js'],
+    // 'cjs-export': ['./src/cjs-exports.js'],
+    // helpers: ['./src/helper.js'],
+    'helper-index': ['./src/helper-index.js'],
   }
   return result
 }
@@ -34,9 +36,9 @@ export default {
   externals: [
     (data, callback) => {
       if (data.contextInfo.issuer) {
-        // if (data.request.includes('data:text/javascript')) {
-        //   return callback()
-        // }
+        if (data.request.includes('data:text/javascript')) {
+          return callback()
+        }
         return callback(null, data.request)
       }
       callback()
@@ -107,8 +109,8 @@ export default {
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
     library: {
-      type: 'modern-module',
-      // type: 'module',
+      // type: 'modern-module',
+      type: 'module',
     },
   },
   optimization: {

@@ -6,6 +6,10 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
+  target: 'node',
+  node: {
+    __dirname: 'node-module',
+  },
   target: 'es2020',
   mode: 'none',
   devtool: false,
@@ -15,14 +19,20 @@ export default {
   },
   externals: {
     // path: 'path node-commonjs',
-    fs: 'fs',
-    'node:fs': 'node:fs',
+    react: 'react233',
+    fs: 'fs233',
+    'node:fs': 'node:fs233',
     'node-fs': 'fs233',
     // path: 'module path',
   },
   externalsType: 'module-import',
   // externalsType: 'node-commonjs',
   module: {
+    parser: {
+      javascript: {
+        preserveImport: true,
+      },
+    },
     rules: [
       {
         test: /\.ts$/,
@@ -62,6 +72,7 @@ export default {
     concatenateModules: true,
     minimize: false,
     moduleIds: 'named',
+    chunkIds: 'named',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],

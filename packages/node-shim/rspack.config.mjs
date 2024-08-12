@@ -7,10 +7,12 @@ const __dirname = path.dirname(__filename)
 
 export default {
   mode: 'none',
+  target: 'node',
   devtool: false,
   entry: {
     main: './src/index.mjs',
   },
+  externalsType: 'module',
   module: {
     rules: [
       {
@@ -50,14 +52,15 @@ export default {
   },
   optimization: {
     concatenateModules: true,
+    // concatenateModules: false,
     minimize: false,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.mts'],
   },
   node: {
-    // __dirname: false,
     __dirname: 'node-module',
+    __filename: 'node-module',
   },
   experiments: isRspack
     ? {
