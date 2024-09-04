@@ -7,58 +7,42 @@ const isRspack = process.argv[1].split('/').pop().includes('rspack')
 const __filename = fileURLToPath(import.meta.url)
 
 const getEntries = (entryDir) => {
-  const files = fg.sync('./src/**/*.js', {})
-  const result = Object.fromEntries(
-    files.map((file) => {
-      const name = path.basename(file, '.js')
-      return [name, file]
-    })
-  )
+  // const files = fg.sync('./src/**/*.js', {})
+  // const result = Object.fromEntries(
+  //   files.map((file) => {
+  //     const name = path.basename(file, '.js')
+  //     return [name, file]
+  //   })
+  // )
 
   return {
-    // 'barrel-constants': ['./src/barrel-constants.js'],
-    // constants: ['./src/constants.js'],
-    // 'some-cjs': ['./src/some-cjs.cjs'],
-    // lib: ['./src/lib.js'],
-    // 'no-export': ['./src/no-export.js'],
-    // 'cjs-export': ['./src/cjs-exports.js'],
-    // helpers: ['./src/helper.js'],
-    // react: 'react',
-    'helper-index': './src/helper-index.js',
+    lib: ['./src/index.js'],
+    // main: ['./src/main.js'],
   }
-  return result
 }
 
 export default {
   mode: 'none',
-  target: 'node',
   devtool: false,
   entry: getEntries(),
   externalsType: 'module',
-  externals: {
-    './helper-content': './helper-content.js',
-  },
   // externals: [
   //   (data, callback) => {
   //     if (data.contextInfo.issuer) {
+  //       if (data.request.endsWith('.css')) {
+  //         return callback()
+  //       }
+
   //       if (data.request.includes('data:text/javascript')) {
   //         return callback()
   //       }
-  //       if (data.request.includes('stub')) {
-  //         return callback()
-  //       }
+
   //       return callback(null, data.request)
   //     }
   //     callback()
   //   },
   // ],
   module: {
-    noParse: (resource) => {
-      // ;/helper-content/
-      if (resource.includes('helper-content')) {
-        return true
-      }
-    },
     rules: [
       {
         test: /\.js$/,
@@ -78,10 +62,6 @@ export default {
                 targets: ['chrome >= 107'],
               },
             },
-          },
-          {
-            loader: path.resolve(__filename, '../my-loader.js'),
-            options: {},
           },
         ],
       },
@@ -123,8 +103,8 @@ export default {
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
     library: {
-      type: 'module',
       // type: 'modern-module',
+      type: 'modern-module',
     },
   },
   optimization: {
@@ -143,6 +123,7 @@ export default {
   experiments: isRspack
     ? {
         outputModule: true,
+        css: true,
         rspackFuture: {
           bundlerInfo: {
             force: false,
@@ -151,5 +132,6 @@ export default {
       }
     : {
         outputModule: true,
+        css: true,
       },
 }

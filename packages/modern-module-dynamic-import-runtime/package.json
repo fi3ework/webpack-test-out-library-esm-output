@@ -1,10 +1,10 @@
 {
-  "name": "@monorepo/ok",
+  "name": "@monorepo/reexport-ts-type",
   "private": true,
   "scripts": {
     "build:webpack": "webpack --config rspack.config.mjs",
     "build:webpack-bundleless": "webpack --config webpack-bundleless.config.mjs",
-    "build:rspack": "rspack --config rspack.config.mjs",
+    "build:rspack": "rspack --config rspack.config.js",
     "build:rspack-bundleless": "rspack --config rspack-bundleless.config.mjs"
   },
   "dependencies": {

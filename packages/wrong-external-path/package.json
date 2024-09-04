@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/ok",
+  "name": "@monorepo/reexport-ts-type",
   "private": true,
   "scripts": {
     "build:webpack": "webpack --config rspack.config.mjs",

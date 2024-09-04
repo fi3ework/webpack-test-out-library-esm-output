@@ -1,3 +1,6 @@
+import rspack from '@rspack/core'
+import webpack from 'webpack'
+import { plugins } from '@swc/core'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -6,17 +9,21 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
-  mode: 'none',
+  mode: 'production',
   devtool: false,
   entry: {
-    main: './src/index.ts',
+    main: './src/index.js',
   },
+  plugins: [
+    isRspack
+      ? new rspack.DefinePlugin({
+          'process.env.NODE_ENV': 'process.env.NODE_ENV',
+        })
+      : new webpack.DefinePlugin({
+          'process.env.NODE_ENV': 'process.env.NODE_ENV',
+        }),
+  ],
   module: {
-    parser: {
-      javascript: {
-        exportsPresence: 'error',
-      },
-    },
     rules: [
       {
         test: /\.ts$/,
@@ -47,17 +54,28 @@ export default {
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
     library: {
-      type: 'modern-module',
+      type: 'module',
     },
   },
   optimization: {
     concatenateModules: true,
     minimize: false,
+    nodeEnv: false,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
-  experiments: {
-    outputModule: true,
-  },
+
+  experiments: isRspack
+    ? {
+        outputModule: true,
+        rspackFuture: {
+          bundlerInfo: {
+            force: false,
+          },
+        },
+      }
+    : {
+        outputModule: true,
+      },
 }

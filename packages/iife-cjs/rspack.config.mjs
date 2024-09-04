@@ -1,5 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
+import rspack from '@rspack/core'
 
 const __filename = fileURLToPath(import.meta.url)
 
@@ -47,7 +48,15 @@ export default {
   },
   target: 'es2022',
   optimization: {
-    minimize: false,
+    minimize: true,
+    minimizer: [
+      new rspack.SwcJsMinimizerRspackPlugin({
+        minimizerOptions: {
+          compress: false,
+          mangle: false,
+        },
+      }),
+    ],
     concatenateModules: true,
     splitChunks: false,
   },

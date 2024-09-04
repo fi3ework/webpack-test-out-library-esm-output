@@ -1,6 +1,10 @@
 {
-  "name": "@monorepo/ok",
+  "name": "@monorepo/self",
   "private": true,
+  "main": "./src/index.mjs",
+  "exports": {
+    ".": "./dist/main.mjs"
+  },
   "scripts": {
     "build:webpack": "webpack --config rspack.config.mjs",
     "build:webpack-bundleless": "webpack --config webpack-bundleless.config.mjs",

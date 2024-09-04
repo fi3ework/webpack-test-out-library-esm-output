@@ -8,6 +8,8 @@
     "build:rspack-bundleless": "rspack --config rspack-bundleless.config.mjs"
   },
   "dependencies": {
+    "@rslib/tsconfig": "workspace:*",
+    "@tsconfig/strictest": "^2.0.5",
     "es-module-lexer": "^1.4.1",
     "esbuild-loader": "^4.0.3",
     "ts-loader": "^9.5.1"

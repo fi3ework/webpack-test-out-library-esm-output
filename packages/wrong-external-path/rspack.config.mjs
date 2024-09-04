@@ -6,15 +6,30 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
+  target: 'web',
   mode: 'none',
   devtool: false,
   entry: {
-    main: './src/index.ts',
+    index: './index.ts',
   },
+  externals: [
+    {
+      react: 'react233',
+      vue: 'vue233',
+      fs: 'fs',
+      angular: 'angular233',
+      solid: 'solid233',
+    },
+  ],
+  externalsPresets: {
+    // node: true,
+    web: true,
+  },
+  externalsType: 'module-import',
   module: {
     parser: {
       javascript: {
-        exportsPresence: 'error',
+        // dynamicImportMode: 'raw',
       },
     },
     rules: [
@@ -38,6 +53,7 @@ export default {
     ],
   },
   output: {
+    publicPath: 'https://cdn.example.com/assets/',
     clean: true,
     module: true,
     path: path.resolve(
@@ -45,19 +61,32 @@ export default {
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
-    chunkFormat: 'module',
+    // chunkFormat: 'module',
     library: {
-      type: 'modern-module',
+      type: 'module',
     },
   },
   optimization: {
+    // concatenateModules: false,
     concatenateModules: true,
     minimize: false,
+    moduleIds: 'named',
+    chunkIds: 'named',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
-  experiments: {
-    outputModule: true,
-  },
+  experiments: isRspack
+    ? {
+        topLevelAwait: true,
+        outputModule: true,
+        rspackFuture: {
+          bundlerInfo: {
+            force: false,
+          },
+        },
+      }
+    : {
+        outputModule: true,
+      },
 }

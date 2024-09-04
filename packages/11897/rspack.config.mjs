@@ -9,14 +9,9 @@ export default {
   mode: 'none',
   devtool: false,
   entry: {
-    main: './src/index.ts',
+    main: './src/index.js',
   },
   module: {
-    parser: {
-      javascript: {
-        exportsPresence: 'error',
-      },
-    },
     rules: [
       {
         test: /\.ts$/,
@@ -57,7 +52,17 @@ export default {
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
-  experiments: {
-    outputModule: true,
-  },
+
+  experiments: isRspack
+    ? {
+        outputModule: true,
+        rspackFuture: {
+          bundlerInfo: {
+            force: false,
+          },
+        },
+      }
+    : {
+        outputModule: true,
+      },
 }

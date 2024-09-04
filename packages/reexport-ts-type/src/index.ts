@@ -1,8 +1,7 @@
-import { v, Q } from './re'
-import { Q as Q_raw } from './type'
-import { thing } from './value'
-import json from './myJson.json'
+import { v, Q_REEXPORT, Q } from './type'
 
-const res = json.map((x) => x.a + 1)
+// type Q = string
+// type J = Q_REEXPORT
 
-export { Q as Q_exp, Q_raw, v as v_exp, thing, res }
+export { v, Q_REEXPORT, Q }
+// export { Q1 }

@@ -12,11 +12,6 @@ export default {
     main: './src/index.ts',
   },
   module: {
-    parser: {
-      javascript: {
-        exportsPresence: 'error',
-      },
-    },
     rules: [
       {
         test: /\.ts$/,
@@ -56,8 +51,18 @@ export default {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
+    tsConfig: path.resolve(__dirname, './tsconfig.json'),
   },
-  experiments: {
-    outputModule: true,
-  },
+  experiments: isRspack
+    ? {
+        outputModule: true,
+        rspackFuture: {
+          bundlerInfo: {
+            force: false,
+          },
+        },
+      }
+    : {
+        outputModule: true,
+      },
 }

@@ -6,31 +6,29 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
-  target: 'node',
-  node: {
-    __dirname: 'node-module',
-  },
-  target: 'es2020',
+  target: 'node14',
   mode: 'none',
   devtool: false,
   entry: {
-    // main: './src/extra.js',
-    main: './src/index.mjs',
+    index: './src/index.mjs',
   },
   externals: {
-    // path: 'path node-commonjs',
     react: 'react233',
-    fs: 'fs233',
-    'node:fs': 'node:fs233',
-    'node-fs': 'fs233',
-    // path: 'module path',
+    vue: 'vue233',
+    fs: 'fs',
+    angular: 'angular233',
+    solid: 'solid233',
+    // lit: ['lit233', 'a', 'b'],
+  },
+  externalsPresets: {
+    // node: true,
+    web: true,
   },
   externalsType: 'module-import',
-  // externalsType: 'node-commonjs',
   module: {
     parser: {
       javascript: {
-        preserveImport: true,
+        // dynamicImportMode: 'raw',
       },
     },
     rules: [
@@ -62,9 +60,10 @@ export default {
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
-    chunkFormat: 'module',
+    // chunkFormat: 'module',
     library: {
       type: 'modern-module',
+      // type: 'modern-module',
     },
   },
   optimization: {
