@@ -4,3 +4,5 @@ export const debug = async () => {
   const foo = await import('./foo.js')
   console.log(foo + bar + baz)
 }
+
+export { baz }

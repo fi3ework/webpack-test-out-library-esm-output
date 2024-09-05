@@ -6,13 +6,15 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
+  target: ['web', 'es2020'],
   mode: 'none',
   devtool: false,
   entry: {
-    main: './src/index.js',
+    main: './src/index.mjs',
   },
   externals: {
-    react: 'react',
+    react: 'module react233',
+    vue: 'import vue233',
   },
   module: {
     rules: [
@@ -36,37 +38,31 @@ export default {
     ],
   },
   output: {
+    publicPath: '/',
     clean: true,
     module: true,
     path: path.resolve(
       __filename,
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
-    chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
+    // chunkFormat: 'commonjs',
+    // chunkLoading: 'jsonp',
+    chunkLoading: 'import',
     library: {
-      type: 'module',
+      type: 'modern-module',
     },
   },
   optimization: {
-    splitChunks: false,
     concatenateModules: true,
+    splitChunks: false,
     minimize: false,
+    moduleIds: 'deterministic',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
-
-  experiments: isRspack
-    ? {
-        outputModule: true,
-        rspackFuture: {
-          bundlerInfo: {
-            force: false,
-          },
-        },
-      }
-    : {
-        outputModule: true,
-      },
+  experiments: {
+    outputModule: true,
+  },
 }

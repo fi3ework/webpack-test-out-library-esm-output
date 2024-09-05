@@ -6,12 +6,18 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
+  target: ['web', 'es2020'],
   mode: 'none',
   devtool: false,
   entry: {
     main: './src/index.mjs',
   },
   module: {
+    parser: {
+      javascript: {
+        dynamicImportMode: 'eager',
+      },
+    },
     rules: [
       {
         test: /\.ts$/,
@@ -41,15 +47,34 @@ export default {
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
     chunkFormat: 'module',
-    chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
+    // chunkFormat: 'commonjs',
+    // chunkLoading: 'jsonp',
+    chunkLoading: 'import',
     library: {
       type: 'modern-module',
     },
   },
   optimization: {
     concatenateModules: true,
+    splitChunks: false,
     minimize: false,
     moduleIds: 'deterministic',
+    splitChunks: {
+      chunks: 'initial',
+      minSize: 20000,
+      minRemainingSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 30,
+      maxInitialRequests: 30,
+      enforceSizeThreshold: 50000,
+      cacheGroups: {
+        default: {
+          minChunks: 1,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
+    },
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
