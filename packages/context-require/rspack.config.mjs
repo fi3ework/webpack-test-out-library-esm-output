@@ -37,14 +37,28 @@ export class PreserveDynamicRequireWebpackPlugin {
 }
 
 export default {
-  plugins: [new PreserveDynamicRequireWebpackPlugin()],
   target: ['web', 'es2020'],
   mode: 'none',
   devtool: false,
   entry: {
     main: './src/index.js',
   },
-  // externals: [/\.\/locales/],
+  // plugins: [new PreserveDynamicRequireWebpackPlugin()],
+  externals: [
+    (data, callback) => {
+      console.log('👨‍⚕️', data, callback)
+      if (
+        data.context.startsWith(
+          '/Users/fi3ework/OSS/webpack-library-output/packages/context-require/src/locales'
+        )
+      ) {
+        callback(null, 'commonjs ' + data.request)
+      }
+      //   return callback(null, 'commonjs fs')
+      // }
+      callback()
+    },
+  ],
   module: {
     // parser: {
     //   'javascript/auto': {
