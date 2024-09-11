@@ -1,4 +1,5 @@
 import path from 'path'
+import webpack from 'webpack'
 import { fileURLToPath } from 'url'
 
 const isRspack = process.argv[1].split('/').pop().includes('rspack')
@@ -44,15 +45,21 @@ export default {
     main: './src/index.js',
   },
   // plugins: [new PreserveDynamicRequireWebpackPlugin()],
+  // plugins: [
+  //   new webpack.ContextReplacementPlugin(
+  //     /\.\/locale/,
+  //     new RegExp(`xasdfasdf.mjs$`)
+  //   ),
+  // ],
   externals: [
     (data, callback) => {
-      console.log('👨‍⚕️', data, callback)
+      console.log('🧣', data.context, callback)
       if (
         data.context.startsWith(
-          '/Users/fi3ework/OSS/webpack-library-output/packages/context-require/src/locales'
+          '/Users/bytedance/Projects/webpack-test-out-library-esm-output/packages/context-require/src/locales'
         )
       ) {
-        callback(null, 'commonjs ' + data.request)
+        return callback(null, 'commonjs ' + data.request)
       }
       //   return callback(null, 'commonjs fs')
       // }
