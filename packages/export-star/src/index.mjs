@@ -1,10 +1,9 @@
-import { foo } from './foo.js'
-
 export const vvvv = async () => {
   const v = await import('vue')
   v()
 }
 
-export { good } from 'react'
+export { good as notGood } from 'react'
 export * from 'react'
-export { foo }
+export * from 'svelte'
+export * from './foo.js'

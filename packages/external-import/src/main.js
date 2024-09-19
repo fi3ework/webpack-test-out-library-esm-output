@@ -1,10 +1,15 @@
 import { react } from 'react'
-import { angular } from 'angular'
-import { other } from './other'
+import * as angular from 'angular'
+import vue, { vueH } from 'vue'
+import { bar } from './bar'
+// import { other } from './other'
 
-export const main = async () => {
+export const main = () => {
+  bar
   // const dyn = await import('./dyn')
-  const vueNs = await import('vue')
-  const reactNs = await import('react')
-  console.log(reactNs, react)
+  // const vueNs = await import('vue')
+  // const reactNs = await import('react')
+  react
+  vue
+  angular
 }

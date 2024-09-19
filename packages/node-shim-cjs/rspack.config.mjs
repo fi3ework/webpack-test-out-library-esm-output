@@ -6,29 +6,23 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
-  target: [
-    'browserslist:Chrome >= 91.0.0',
-    'browserslist:Edge >= 94.0.0',
-    'browserslist:Firefox >= 93.0.0',
-    'browserslist:iOS >= 16.4.0',
-    'browserslist:Node >= 16.11.0',
-    'browserslist:Opera >= 80.0.0',
-    'browserslist:Safari >= 16.4.0',
-  ],
   mode: 'none',
+  target: 'node',
   devtool: false,
   entry: {
     main: './src/index.mjs',
   },
-  externals: {
-    react: 'module react233',
-    svelte: 'module svelte233',
-    vue: 'import vue233',
-  },
+  externalsType: 'module',
   module: {
+    parser: {
+      javascript: {
+        importMeta: false,
+      },
+    },
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.mjs$/,
+        type: 'javascript/auto',
         exclude: [/node_modules/],
         loader: isRspack ? 'builtin:swc-loader' : 'swc-loader',
         options: {
@@ -36,6 +30,7 @@ export default {
           jsc: {
             parser: {
               syntax: 'typescript',
+              topLevelAwait: true,
             },
           },
           env: {
@@ -47,32 +42,41 @@ export default {
     ],
   },
   output: {
-    publicPath: '/',
     clean: true,
-    module: true,
     path: path.resolve(
       __filename,
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
+    chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
-    wasmLoading: 'fetch',
-    // chunkFormat: 'commonjs',
-    // chunkLoading: 'jsonp',
-    chunkLoading: 'import',
     library: {
-      type: 'modern-module',
+      // type: 'umd',
+      type: 'commonjs',
     },
   },
   optimization: {
     concatenateModules: true,
-    splitChunks: false,
+    // concatenateModules: false,
     minimize: false,
-    moduleIds: 'deterministic',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.mts'],
   },
-  experiments: {
-    outputModule: true,
+  node: {
+    __dirname: 'node-module',
+    __filename: 'node-module',
   },
+  experiments: isRspack
+    ? {
+        topLevelAwait: true,
+        outputModule: true,
+        rspackFuture: {
+          bundlerInfo: {
+            force: false,
+          },
+        },
+      }
+    : {
+        outputModule: true,
+      },
 }

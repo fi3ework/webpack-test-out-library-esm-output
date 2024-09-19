@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename)
 
 export default {
   target: 'node14',
-  mode: 'none',
+  mode: 'production',
   devtool: false,
   entry: {
     index: './src/index.mjs',
@@ -62,7 +62,7 @@ export default {
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     // chunkFormat: 'module',
     library: {
-      type: 'modern-module',
+      type: 'module',
       // type: 'modern-module',
     },
   },

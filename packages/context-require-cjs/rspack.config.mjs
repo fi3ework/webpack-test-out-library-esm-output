@@ -8,6 +8,35 @@ const __dirname = path.dirname(__filename)
 
 const PLUGIN_NAME = 'PreserveDynamicRequireWebpackPlugin'
 
+class IgnoreDynamicRequire {
+  apply(compiler) {
+    compiler.hooks.normalModuleFactory.tap(
+      'IgnoreDynamicRequire',
+      (factory) => {
+        factory.hooks.parser
+          .for('javascript/auto')
+          .tap('IgnoreDynamicRequire', (parser, options) => {
+            parser.hooks.call
+              .for('require')
+              .tap('IgnoreDynamicRequire', (expression) => {
+                // This is a SyncBailHook, so returning anything stops the parser, and nothing allows to continue
+                if (
+                  expression.arguments.length !== 1 ||
+                  expression.arguments[0].type === 'Literal'
+                ) {
+                  return
+                }
+                const arg = parser.evaluateExpression(expression.arguments[0])
+                if (!arg.isString() && !arg.isConditional()) {
+                  return true
+                }
+              })
+          })
+      }
+    )
+  }
+}
+
 /**
  * @public
  */
@@ -30,7 +59,6 @@ export class PreserveDynamicRequireWebpackPlugin {
       }
 
       compilation.hooks.succeedModule.tap(PLUGIN_NAME, (mod) => {
-        console.log('😓', mod)
         processDependencies(mod)
       })
     })
@@ -44,6 +72,10 @@ export default {
   entry: {
     main: './src/index.js',
   },
+  plugins: [
+    // new IgnoreDynamicRequire(),
+    // new PreserveDynamicRequireWebpackPlugin(),
+  ],
   // plugins: [new PreserveDynamicRequireWebpackPlugin()],
   // plugins: [
   //   new webpack.ContextReplacementPlugin(
@@ -51,40 +83,31 @@ export default {
   //     new RegExp(`xasdfasdf.mjs$`)
   //   ),
   // ],
-  externals: [
-    (data, callback) => {
-      console.log('🧣', data.context, callback)
-      if (
-        data.context.startsWith(
-          '/Users/bytedance/Projects/webpack-test-out-library-esm-output/packages/context-require/src/locales'
-        )
-      ) {
-        return callback(null, 'commonjs ' + data.request)
-      }
-      //   return callback(null, 'commonjs fs')
-      // }
-      callback()
-    },
-  ],
+  // externals: [
+  //   (data, callback) => {
+  //     console.log('🧣', data.context, callback)
+  //     if (
+  //       data.context.startsWith(
+  //         '/Users/bytedance/Projects/webpack-test-out-library-esm-output/packages/context-require/src/locales'
+  //       )
+  //     ) {
+  //       return callback(null, 'commonjs ' + data.request)
+  //     }
+  //     //   return callback(null, 'commonjs fs')
+  //     // }
+  //     callback()
+  //   },
+  // ],
   module: {
-    // parser: {
-    //   'javascript/auto': {
-    //     wrappedContextRecursive: false,
-    //   },
-    //   javascript: {
-    //     wrappedContextRecursive: false,
-    //   },
-    //   'javascript/dynamic': {
-    //     wrappedContextRecursive: false,
-    //   },
-    //   'javascript/esm': {
-    //     wrappedContextRecursive: false,
-    //   },
-    // },
     noParse: [/\.\/locales/],
     rules: [
       {
-        test: /\.ts$/,
+        test: /\js$/,
+        parser: {
+          requireResolve: false,
+          requireExpression: false,
+        },
+        type: 'javascript/auto',
         exclude: [/node_modules/],
         loader: isRspack ? 'builtin:swc-loader' : 'swc-loader',
         options: {
@@ -98,11 +121,30 @@ export default {
             targets: ['chrome >= 107'],
           },
         },
-        type: 'javascript/auto',
       },
+      // {
+      //   test: /\.js$/,
+      //   type: 'javascript/esm',
+      //   exclude: [/node_modules/],
+      //   loader: isRspack ? 'builtin:swc-loader' : 'swc-loader',
+      //   options: {
+      //     sourceMap: true,
+      //     jsc: {
+      //       parser: {
+      //         syntax: 'typescript',
+      //       },
+      //     },
+      //     env: {
+      //       targets: ['chrome >= 107'],
+      //     },
+      //   },
+      // },
     ],
   },
   output: {
+    // environment: {
+    //   dynamicImport: false,
+    // },
     publicPath: '/',
     clean: true,
     // module: true,
@@ -116,7 +158,11 @@ export default {
     // chunkLoading: 'import',
     library: {
       type: 'commonjs',
+      // type: 'modern-module',
     },
+  },
+  experiments: {
+    // outputModule: true,
   },
   optimization: {
     splitChunks: false,
