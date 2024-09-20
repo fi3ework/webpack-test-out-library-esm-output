@@ -1,19 +1,34 @@
-// ================== cjs ==================
+const dir = process.env.name
+import { createRequire as _createRequire } from 'module'
 
-const debug = async () => {
-  const name = process.env.MY_NAME
-  // const fileEsm = await import('vue')
-  const r1 = require('./value.cjs')
-  // const r2 = require(name)
-  const r3 = require('./locales/' + name + '.js')
-  const r4 = require(a + './locales/' + name + '.js')
-  const r5 = require(name
-    ? './locales/' + name + '.js'
-    : './locales/nested' + name + 'js')
-  const rr1 = require.resolve('vue')
-  const rr2 = require.resolve('./locales/' + name + '.js')
-  console.log(files + file)
-}
+// === require ===
+const require1 = require(dir) // transform
+const require2 = require('./other.js') // transform
+const require3 = require('./foo/' + dir + '.js') // preserve
+const require4 = require(a + './foo/' + dir + '.js') // preserve
+const require5 = require(dir
+  ? './foo/' + dir + '.js'
+  : './foo/nested' + dir + 'js')
 
-module.exports = debug
-// export { debug }
+// === require.resolve ===
+// const resolve1 = require.resolve(dir)
+
+// const resolve2 = require.resolve('./other.js')
+
+// const resolve3 = require.resolve('./foo/' + dir + '.js')
+
+// const resolve4 = require.resolve(
+//   process.env.RANDOM ? './foo/' + dir + '.js' : './bar/' + dir + 'js'
+// )
+
+// can't handle, `require` will turn into expression
+// const resolve5 = require.resolve
+// resolve5('./other.js')
+
+// can't handle, `require` will turn into `undefined`
+// const __require = require
+// const resolve6 = __require.resolve('./other.js')
+
+// let _require = _createRequire(new URL('./other.js', import.meta.url))
+// const a = _require
+// console.log(typeof a)

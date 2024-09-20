@@ -66,7 +66,7 @@ export class PreserveDynamicRequireWebpackPlugin {
 }
 
 export default {
-  target: ['web', 'es2020'],
+  target: ['node', 'es2020'],
   mode: 'none',
   devtool: false,
   entry: {
@@ -104,8 +104,10 @@ export default {
       {
         test: /\js$/,
         parser: {
-          requireResolve: false,
-          requireExpression: false,
+          // importMeta: false,
+          // createRequire: false,
+          // requireResolve: false,
+          requireDynamic: false,
         },
         type: 'javascript/auto',
         exclude: [/node_modules/],
@@ -162,7 +164,7 @@ export default {
     },
   },
   experiments: {
-    // outputModule: true,
+    outputModule: true,
   },
   optimization: {
     splitChunks: false,
