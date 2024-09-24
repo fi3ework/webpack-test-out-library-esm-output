@@ -12,19 +12,26 @@ export default {
   entry: {
     main: './src/index.mjs',
   },
-  // externals: {
-  //   react: 'react233',
-  //   vue: 'vue233',
-  // },
-  externals: (data, callback) => {
-    const { request, dependencyType, contextInfo } = data
-    console.log('✊', data)
-    if (request === 'vue') {
-      return callback(null, `commonjs vue233`)
-    }
-
-    callback()
+  externalsType: 'commonjs',
+  externals: {
+    react: 'react233',
+    vue: 'vue233',
   },
+  // externals: [
+  //   {
+  //     react: 'react233',
+  //   },
+  //   (data, callback) => {
+  //     const { request, dependencyType, contextInfo } = data
+  //     console.log('✊', data)
+
+  //     if (data.type2 === 'import()') {
+  //       return callback(null, `import vue233`)
+  //     }
+
+  //     callback()
+  //   },
+  // ],
   module: {
     rules: [
       {

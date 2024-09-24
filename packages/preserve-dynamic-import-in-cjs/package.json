@@ -10,6 +10,7 @@
   "dependencies": {
     "es-module-lexer": "^1.4.1",
     "esbuild-loader": "^4.0.3",
+    "pad-left": "^2.1.0",
     "ts-loader": "^9.5.1"
   }
 }

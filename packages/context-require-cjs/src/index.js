@@ -2,13 +2,13 @@ const dir = process.env.name
 import { createRequire as _createRequire } from 'module'
 
 // === require ===
-const require1 = require(dir) // transform
-const require2 = require('./other.js') // transform
-const require3 = require('./foo/' + dir + '.js') // preserve
-const require4 = require(a + './foo/' + dir + '.js') // preserve
-const require5 = require(dir
-  ? './foo/' + dir + '.js'
-  : './foo/nested' + dir + 'js')
+// const require1 = require(dir) // transform
+// const require2 = require('./other.js') // transform
+// const require3 = require('./foo/' + dir + '.js') // preserve
+// const require4 = require(a + './foo/' + dir + '.js') // preserve
+// const require5 = require(dir
+//   ? './foo/' + dir + '.js'
+//   : './foo/nested' + dir + 'js')
 
 // === require.resolve ===
 // const resolve1 = require.resolve(dir)
@@ -32,3 +32,22 @@ const require5 = require(dir
 // let _require = _createRequire(new URL('./other.js', import.meta.url))
 // const a = _require
 // console.log(typeof a)
+
+// === require as expression ===
+
+require('./other.js')
+
+const resolve1 = require.resolve
+resolve1('./other.js')
+
+const lazyFn = (module, requireFn) => {}
+lazyFn('./other.js', require)
+
+// Can't handle, `require` will turn into `undefined`
+// const __require = require
+// const resolve2 = __require.resolve('./other.js')
+
+// === dynamic import dynamic ===
+// const import1 = import('./other.js') // transform
+// const import2 = import(a + './foo/' + dir + '.js')
+console.log('111')
