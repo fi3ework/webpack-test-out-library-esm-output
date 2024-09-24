@@ -63,19 +63,21 @@ export default {
     ),
     chunkFormat: 'module',
     chunkLoading: 'import',
-    // library: {
-    //   type: 'module',
-    // },
+    library: {
+      type: 'modern-module',
+    },
   },
   optimization: {
     concatenateModules: true,
     splitChunks: false,
     minimize: false,
+    moduleIds: 'named',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
   experiments: {
+    topLevelAwait: false,
     outputModule: true,
   },
 }
