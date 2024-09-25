@@ -64,6 +64,7 @@ export default {
     chunkFormat: 'module',
     chunkLoading: 'import',
     library: {
+      // type: 'module',
       type: 'modern-module',
     },
   },
