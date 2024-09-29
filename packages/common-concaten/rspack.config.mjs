@@ -28,6 +28,7 @@ export default {
             targets: ['chrome >= 107'],
           },
         },
+        // type: 'javascript/auto',
         type: 'javascript/auto',
       },
     ],

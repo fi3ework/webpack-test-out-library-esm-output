@@ -29,7 +29,9 @@ import { createRequire as _createRequire } from 'module'
 // const __require = require
 // const resolve6 = __require.resolve('./other.js')
 
-// let _require = _createRequire(new URL('./other.js', import.meta.url))
+let require = _createRequire(import.meta.url)
+const require2 = require('./other.js') // transform
+console.log('🧟')
 // const a = _require
 // console.log(typeof a)
 
