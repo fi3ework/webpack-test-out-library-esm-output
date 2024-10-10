@@ -259,6 +259,18 @@ importers:
         specifier: ^9.5.1
         version: 9.5.1(typescript@5.4.2)(webpack@webpack)
 
+  packages/dynamic-import-in-cjs:
+    dependencies:
+      es-module-lexer:
+        specifier: ^1.4.1
+        version: 1.4.1
+      esbuild-loader:
+        specifier: ^4.0.3
+        version: 4.1.0(webpack@webpack)
+      ts-loader:
+        specifier: ^9.5.1
+        version: 9.5.1(typescript@5.4.2)(webpack@webpack)
+
   packages/emit-vs-inline-assets:
     dependencies:
       '@rsbuild/core':
@@ -481,6 +493,18 @@ importers:
         specifier: ^9.5.1
         version: 9.5.1(typescript@5.4.2)(webpack@webpack)
 
+  packages/require.context:
+    dependencies:
+      es-module-lexer:
+        specifier: ^1.4.1
+        version: 1.4.1
+      esbuild-loader:
+        specifier: ^4.0.3
+        version: 4.1.0(webpack@webpack)
+      ts-loader:
+        specifier: ^9.5.1
+        version: 9.5.1(typescript@5.4.2)(webpack@webpack)
+
   packages/rsbuild-repro:
     dependencies:
       es-module-lexer:
@@ -561,6 +585,42 @@ importers:
       '@tsconfig/strictest':
         specifier: ^2.0.5
         version: 2.0.5
+
+  packages/webpack-18843:
+    dependencies:
+      es-module-lexer:
+        specifier: ^1.4.1
+        version: 1.4.1
+      esbuild-loader:
+        specifier: ^4.0.3
+        version: 4.1.0(webpack@webpack)
+      ts-loader:
+        specifier: ^9.5.1
+        version: 9.5.1(typescript@5.4.2)(webpack@webpack)
+
+  packages/webpack-test--module-import:
+    dependencies:
+      '@rspress/shared':
+        specifier: ^1.31.1
+        version: 1.31.1
+      es-module-lexer:
+        specifier: ^1.4.1
+        version: 1.4.1
+      esbuild-loader:
+        specifier: ^4.0.3
+        version: 4.1.0(webpack@webpack)
+      graceful-fs:
+        specifier: ^4.2.11
+        version: 4.2.11
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      pad-left:
+        specifier: ^2.1.0
+        version: 2.1.0
+      ts-loader:
+        specifier: ^9.5.1
+        version: 9.5.1(typescript@5.4.2)(webpack@webpack)
 
   packages/wrong-external-path:
     dependencies:

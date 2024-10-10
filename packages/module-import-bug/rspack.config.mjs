@@ -7,7 +7,9 @@ const __dirname = path.dirname(__filename)
 
 export default {
   target: ['node', 'es2020'],
-  mode: 'none',
+  // mode: 'none',
+  // mode: 'development',
+  // mode: 'production',
   devtool: false,
   entry: {
     main: './src/index.mjs',
