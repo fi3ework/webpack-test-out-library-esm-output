@@ -13,15 +13,19 @@ export default {
     index: './src/index.js',
   },
   externals: {
-    react: 'react233',
-    vue: 'vue233',
-    fs: 'fs233',
-    angular: 'angular233',
-    solid: 'solid233',
+    // external1: 'external111',
+    // external2: 'external222',
+    // external3: 'external333',
+    external4: 'external444',
+    // react: 'react233',
+    // vue: 'vue233',
+    // fs: 'fs233',
+    // angular: 'angular233',
+    // solid: 'solid233',
   },
-  externalsType: 'commonjs',
+  // externalsType: 'system',
   // externalsType: 'amd',
-  // externalsType: 'import',
+  externalsType: 'commonjs',
   // externalsType: {
   //   commonjs: 'import',
   // },
@@ -56,10 +60,9 @@ export default {
     ),
     // chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     // chunkFormat: 'module',
-    // library: {
-    // type: 'module',
-    // type: 'modern-module',
-    // },
+    library: {
+      type: 'system',
+    },
   },
   optimization: {
     // concatenateModules: false,
@@ -73,8 +76,8 @@ export default {
   },
   experiments: isRspack
     ? {
-        topLevelAwait: false,
-        outputModule: true,
+        // topLevelAwait: false,
+        // outputModule: true,
         rspackFuture: {
           bundlerInfo: {
             force: false,
@@ -82,6 +85,6 @@ export default {
         },
       }
     : {
-        outputModule: true,
+        // outputModule: true,
       },
 }

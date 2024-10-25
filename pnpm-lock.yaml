@@ -112,6 +112,18 @@ importers:
         specifier: ^9.5.1
         version: 9.5.1(typescript@5.4.2)(webpack@webpack)
 
+  packages/browser-false:
+    dependencies:
+      es-module-lexer:
+        specifier: ^1.4.1
+        version: 1.4.1
+      esbuild-loader:
+        specifier: ^4.0.3
+        version: 4.1.0(webpack@webpack)
+      ts-loader:
+        specifier: ^9.5.1
+        version: 9.5.1(typescript@5.4.2)(webpack@webpack)
+
   packages/bundleless:
     dependencies:
       es-module-lexer:
@@ -367,6 +379,18 @@ importers:
         specifier: ^9.5.1
         version: 9.5.1(typescript@5.4.2)(webpack@webpack)
 
+  packages/json:
+    dependencies:
+      es-module-lexer:
+        specifier: ^1.4.1
+        version: 1.4.1
+      esbuild-loader:
+        specifier: ^4.0.3
+        version: 4.1.0(webpack@webpack)
+      ts-loader:
+        specifier: ^9.5.1
+        version: 9.5.1(typescript@5.4.2)(webpack@webpack)
+
   packages/minimal-concaten-break:
     dependencies:
       es-module-lexer:
@@ -411,6 +435,18 @@ importers:
       pad-left:
         specifier: ^2.1.0
         version: 2.1.0
+      ts-loader:
+        specifier: ^9.5.1
+        version: 9.5.1(typescript@5.4.2)(webpack@webpack)
+
+  packages/multiple-entries:
+    dependencies:
+      es-module-lexer:
+        specifier: ^1.4.1
+        version: 1.4.1
+      esbuild-loader:
+        specifier: ^4.0.3
+        version: 4.1.0(webpack@webpack)
       ts-loader:
         specifier: ^9.5.1
         version: 9.5.1(typescript@5.4.2)(webpack@webpack)
@@ -600,6 +636,21 @@ importers:
       '@tsconfig/strictest':
         specifier: ^2.0.5
         version: 2.0.5
+
+  packages/var-with-at:
+    dependencies:
+      es-module-lexer:
+        specifier: ^1.4.1
+        version: 1.4.1
+      esbuild-loader:
+        specifier: ^4.0.3
+        version: 4.1.0(webpack@webpack)
+      systemjs:
+        specifier: ^6.15.1
+        version: 6.15.1
+      ts-loader:
+        specifier: ^9.5.1
+        version: 9.5.1(typescript@5.4.2)(webpack@webpack)
 
   packages/webpack-18843:
     dependencies:

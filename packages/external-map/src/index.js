@@ -1,3 +1,2 @@
-const c = require('react')
-
-console.log(c)
+import x from 'external4'
+console.log('🏃‍♀️', x)

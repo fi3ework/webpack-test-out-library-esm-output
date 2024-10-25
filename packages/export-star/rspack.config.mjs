@@ -6,24 +6,17 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
-  target: [
-    'browserslist:Chrome >= 91.0.0',
-    'browserslist:Edge >= 94.0.0',
-    'browserslist:Firefox >= 93.0.0',
-    'browserslist:iOS >= 16.4.0',
-    'browserslist:Node >= 16.11.0',
-    'browserslist:Opera >= 80.0.0',
-    'browserslist:Safari >= 16.4.0',
-  ],
   mode: 'none',
   devtool: false,
   entry: {
-    main: './src/index.mjs',
+    // case1: './src/case1.js',
+    // case2: './src/case2.js',
+    case3: './src/case3.js',
   },
   externals: {
     react: 'module react233',
     svelte: 'module svelte233',
-    vue: 'import vue233',
+    vue: 'module vue233',
   },
   module: {
     rules: [
@@ -47,6 +40,7 @@ export default {
     ],
   },
   output: {
+    filename: `[name].mjs`,
     publicPath: '/',
     clean: true,
     module: true,
@@ -55,7 +49,7 @@ export default {
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
     chunkFormat: 'module',
-    wasmLoading: 'fetch',
+    // wasmLoading: 'fetch',
     // chunkFormat: 'commonjs',
     // chunkLoading: 'jsonp',
     chunkLoading: 'import',

@@ -9,7 +9,7 @@ export default {
   mode: 'none',
   devtool: false,
   entry: {
-    main: './src/index.mjs',
+    mainA: './src/a.js',
   },
   module: {
     rules: [
@@ -28,43 +28,33 @@ export default {
             targets: ['chrome >= 107'],
           },
         },
-        // type: 'javascript/auto',
         type: 'javascript/auto',
       },
     ],
   },
   output: {
+    publicPath: '/',
     clean: true,
     module: true,
     path: path.resolve(
       __filename,
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
-    chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
+    chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     library: {
-      type: 'modern-module',
+      type: 'module',
     },
   },
   optimization: {
-    avoidEntryIife: true,
+    moduleIds: 'named',
     concatenateModules: true,
     minimize: false,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
-
-  experiments: isRspack
-    ? {
-        outputModule: true,
-        rspackFuture: {
-          bundlerInfo: {
-            force: false,
-          },
-        },
-      }
-    : {
-        outputModule: true,
-      },
+  experiments: {
+    outputModule: true,
+  },
 }

@@ -9,7 +9,8 @@ export default {
   mode: 'none',
   devtool: false,
   entry: {
-    main: './src/index.mjs',
+    main: './src/index.ts',
+    bar: './src/bar.ts',
   },
   module: {
     rules: [
@@ -43,18 +44,23 @@ export default {
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
     library: {
-      type: 'modern-module',
+      type: 'module',
+      // type: 'modern-module',
     },
   },
   optimization: {
     avoidEntryIife: true,
     concatenateModules: true,
     minimize: false,
+    splitChunks: false,
+    runtimeChunk: false,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
-
+  stats: {
+    chunkGroups: true,
+  },
   experiments: isRspack
     ? {
         outputModule: true,
