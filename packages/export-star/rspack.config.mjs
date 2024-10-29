@@ -9,14 +9,15 @@ export default {
   mode: 'none',
   devtool: false,
   entry: {
-    // case1: './src/case1.js',
+    case1: './src/case1.js',
     // case2: './src/case2.js',
-    case3: './src/case3.js',
+    // case3: './src/case3.js',
   },
   externals: {
-    react: 'module react233',
-    svelte: 'module svelte233',
-    vue: 'module vue233',
+    external1: 'module-import external1',
+    react: 'module-import react233',
+    svelte: 'module-import svelte233',
+    vue: 'module-import vue233',
   },
   module: {
     rules: [
@@ -54,6 +55,7 @@ export default {
     // chunkLoading: 'jsonp',
     chunkLoading: 'import',
     library: {
+      // type: 'module',
       type: 'modern-module',
     },
   },
