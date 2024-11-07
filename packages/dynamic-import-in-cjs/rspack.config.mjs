@@ -7,10 +7,10 @@ const __dirname = path.dirname(__filename)
 
 export default {
   target: 'node14',
-  // mode: 'production',
+  mode: 'none',
   devtool: false,
   entry: {
-    index: './src/index.mjs',
+    index: './src/index.js',
   },
   externals: {
     react: 'react233',
@@ -18,13 +18,8 @@ export default {
     fs: 'fs',
     angular: 'angular233',
     solid: 'solid233',
-    // lit: ['lit233', 'a', 'b'],
   },
-  externalsPresets: {
-    // node: true,
-    web: true,
-  },
-  externalsType: 'module-import',
+  externalsType: 'commonjs',
   module: {
     parser: {
       javascript: {
@@ -52,9 +47,12 @@ export default {
     ],
   },
   output: {
+    environment: {
+      dynamicImport: true,
+    },
     publicPath: 'https://cdn.example.com/assets/',
     clean: true,
-    module: true,
+    module: false,
     path: path.resolve(
       __filename,
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
@@ -79,7 +77,7 @@ export default {
   experiments: isRspack
     ? {
         topLevelAwait: true,
-        outputModule: true,
+        // outputModule: true,
         rspackFuture: {
           bundlerInfo: {
             force: false,
@@ -87,6 +85,6 @@ export default {
         },
       }
     : {
-        outputModule: true,
+        // outputModule: true,
       },
 }
