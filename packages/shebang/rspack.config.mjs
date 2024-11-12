@@ -1,24 +1,54 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { BannerPlugin } from '@rspack/core'
+import { BannerPlugin, ProvidePlugin, DefinePlugin } from '@rspack/core'
 import { createRequire } from 'module'
+import ShebangPlugin from 'webpack-shebang-plugin'
 
 const _require = createRequire(import.meta.url)
 const isRspack = process.argv[1].split('/').pop().includes('rspack')
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+class NN {
+  apply(compiler) {
+    compiler.hooks.thisCompilation.tap('PLUGIN_NAME', (compilation) => {
+      compilation.hooks.processAssets.tap(
+        {
+          name: 'PLUGIN_NAME',
+        },
+        () => {
+          for (const chunk of compilation.chunks) {
+            const chunkGraph = compilation.chunkGraph
+            const entryModules = chunkGraph.getChunkEntryModulesIterable(chunk)
+            const moduleResources = [...entryModules].map((m) => {
+              console.log('😇', m.resource)
+            })
+          }
+        }
+      )
+    })
+  }
+}
+
 export default {
   mode: 'none',
   plugins: [
-    new BannerPlugin((...args) => {
-      // console.log('💂‍♀️', args[0], args[0].chunk.files)
-      return '// ok'
+    new DefinePlugin({
+      __webpack_hash__: '__webpack_hash__',
     }),
+    // new ProvidePlugin({
+    //   __webpack_hash__: '__webpack_hash__',
+    // }),
+    // new NN(),
+    // new ShebangPlugin(),
+    // new BannerPlugin((...args) => {
+    //   // console.log('💂‍♀️', args[0], args[0].chunk.files)
+    //   return '// ok'
+    // }),
   ],
   devtool: false,
   entry: {
-    main: { import: './src/index.ts', layer: 'shebang' },
+    main: { import: './src/index.ts' },
   },
   module: {
     rules: [
