@@ -17,6 +17,7 @@ export default {
       vue: 'vue233',
       lodash: 'lodash233',
       jquery: 'jquery',
+      solid: 'solid233',
     },
   ],
   externalsType: 'module-import',
