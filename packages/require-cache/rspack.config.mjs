@@ -18,10 +18,12 @@ export default {
   module: {
     rules: [
       {
-        test: /\js$/,
+        test: /js$/,
         parser: {
-          requireResolve: false,
-          requireDynamic: false,
+          // importMeta: false,
+          // importDynamic: false,
+          // requireResolve: false,
+          // requireDynamic: false,
           requireAsExpression: false,
         },
         type: 'javascript/auto',
@@ -55,6 +57,7 @@ export default {
     ),
     library: {
       type: 'modern-module',
+      // type: 'module',
     },
   },
   experiments: {

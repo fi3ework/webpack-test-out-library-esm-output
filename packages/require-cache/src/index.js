@@ -1,19 +1,47 @@
-export function getI18nData(docConfig) {
-  const { i18nSourcePath = DEFAULT_I18N_SOURCE } = {}
-  try {
-    console.log('🚶‍♂️', require.extensions)
-    console.log('🚶‍♂️', __webpack_hash__)
-    console.log('🚶‍♂️', require.__webpack_layer__)
-    delete require.cache[i18nSourcePath]
-    const x = require.resolve('external1')
-    return {}
-  } catch (e) {
-    return {}
+export function foo() {
+  // const q = typeof __webpack_layer__
+  // const pp = './other.js?' + __webpack_layer__
+  // console.log(pp)
+  const a = __webpack_layer__ && 2333
+  return {
+    // __webpack_hash__,
+    // __webpack_layer__,
+    // __webpack_public_path__,
+    // __webpack_modules__,
+    // __webpack_module__,
+    // __webpack_chunk_load__,
+    // __webpack_base_uri__,
+    // __non_webpack_require__,
+    // __system_context__,
+    // __webpack_share_scopes__,
+    // __webpack_init_sharing__,
+    // __webpack_nonce__,
+    // __webpack_chunkname__,
+    // __webpack_runtime_id__,
+    // __webpack_require__,
+    // __webpack_get_script_filename__,
+    // __rspack_version__,
+    // __rspack_unique_id__,
+
+    // a: require.extensions,
+    // b: require.config,
+    // c: require.version,
+    // d: require.amd,
+    // e: require.include,
+    // f: require.onError,
+    // g: require.main.require,
+    // h: module.parent.require,
+    // i: require.cache,
+    // j: require.main,
+    // k: __webpack_module__.id,
+
+    // l: require.config(),
+    // m: require.include(),
+    // n: require.onError(),
+    // o: require.main.require(),
+    // p: require.parent.require(),
+    q,
+    r,
+    // r: typeof __webpack_layer__,
   }
 }
-
-export const object = {
-  name: 'module1',
-  layer: __webpack_layer__,
-}
-export {}
