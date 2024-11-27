@@ -2,7 +2,7 @@ export function foo() {
   // const q = typeof __webpack_layer__
   // const pp = './other.js?' + __webpack_layer__
   // console.log(pp)
-  const a = __webpack_layer__ && 2333
+  const a = __webpack_layer__ && 233333
   return {
     // __webpack_hash__,
     // __webpack_layer__,
