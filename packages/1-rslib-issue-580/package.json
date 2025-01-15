@@ -1,0 +1,15 @@
+{
+  "name": "@monorepo/ok",
+  "private": true,
+  "scripts": {
+    "build:webpack": "webpack --config rspack.config.js",
+    "build:webpack-bundleless": "webpack --config webpack-bundleless.config.js",
+    "build:rspack": "rspack --config rspack.config.js",
+    "build:rspack-bundleless": "rspack --config rspack-bundleless.config.js"
+  },
+  "dependencies": {
+    "es-module-lexer": "^1.4.1",
+    "esbuild-loader": "^4.0.3",
+    "ts-loader": "^9.5.1"
+  }
+}

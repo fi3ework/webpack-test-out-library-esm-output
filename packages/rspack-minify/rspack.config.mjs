@@ -1,4 +1,5 @@
 import path from 'path'
+import rspack from '@rspack/core'
 import { fileURLToPath } from 'url'
 
 const isRspack = process.argv[1].split('/').pop().includes('rspack')
@@ -9,13 +10,12 @@ export default {
   mode: 'none',
   devtool: false,
   entry: {
-    main: './src/index.ts',
-    bar: './src/bar.ts',
+    main: './src/index.mjs',
   },
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.js$/,
         exclude: [/node_modules/],
         loader: isRspack ? 'builtin:swc-loader' : 'swc-loader',
         options: {
@@ -29,11 +29,16 @@ export default {
             targets: ['chrome >= 107'],
           },
         },
-        // type: 'javascript/auto',
         type: 'javascript/auto',
       },
     ],
   },
+  externals: {
+    preact: 'preact/jsx-runtime',
+    'preact/jsx-runtime': 'preact/jsx-runtime',
+    './index.module.mjs': './index.module.mjs',
+  },
+  externalsType: 'module',
   output: {
     clean: true,
     module: true,
@@ -44,33 +49,28 @@ export default {
     chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
     library: {
-      type: 'module',
-      // type: 'modern-module',
+      type: 'modern-module',
     },
   },
   optimization: {
-    // avoidEntryIife: true,
     concatenateModules: true,
-    minimize: false,
-    splitChunks: false,
-    runtimeChunk: false,
+    minimize: true,
+    minimizer: [
+      new rspack.SwcJsMinimizerRspackPlugin({
+        minimizerOptions: {
+          format: {
+            // comments: 'some',
+            preserveAnnotations: true,
+            comments: 'all',
+          },
+        },
+      }),
+    ],
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
-  stats: {
-    chunkGroups: true,
+  experiments: {
+    outputModule: true,
   },
-  experiments: isRspack
-    ? {
-        outputModule: true,
-        rspackFuture: {
-          bundlerInfo: {
-            force: false,
-          },
-        },
-      }
-    : {
-        outputModule: true,
-      },
 }

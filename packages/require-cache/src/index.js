@@ -31,7 +31,10 @@ export function foo() {
     // f: require.onError,
     // g: require.main.require,
     // h: module.parent.require,
-    // i: require.cache,
+    i: require.cache,
+    ii: require.cache2,
+    iii: require.onError,
+    iiii: __webpack_hash__,
     // j: require.main,
     // k: __webpack_module__.id,
 

@@ -9,13 +9,24 @@ export default {
   mode: 'none',
   devtool: false,
   entry: {
-    main: './src/index.ts',
-    bar: './src/bar.ts',
+    main: './src/index.js',
+  },
+  externals: [
+    /.*hook.*/,
+    {
+      './hook': './hook',
+      '../hook': '../hook',
+    },
+  ],
+  resolve: {
+    alias: {
+      '@src': path.resolve(__dirname, './src'),
+    },
   },
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.js$/,
         exclude: [/node_modules/],
         loader: isRspack ? 'builtin:swc-loader' : 'swc-loader',
         options: {
@@ -41,26 +52,20 @@ export default {
       __filename,
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
-    chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
-    chunkFormat: 'module',
-    library: {
-      type: 'module',
-      // type: 'modern-module',
-    },
+    // chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
+    // chunkFormat: 'module',
+    // library: {
+    //   type: 'modern-module',
+    // },
   },
   optimization: {
-    // avoidEntryIife: true,
+    avoidEntryIife: true,
     concatenateModules: true,
     minimize: false,
-    splitChunks: false,
-    runtimeChunk: false,
   },
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
-  },
-  stats: {
-    chunkGroups: true,
-  },
+  // resolve: {
+  //   extensions: ['.ts', '.tsx', '.js'],
+  // },
   experiments: isRspack
     ? {
         outputModule: true,

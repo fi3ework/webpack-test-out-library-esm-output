@@ -6,16 +6,28 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
-  mode: 'none',
+  target: 'node20',
+  mode: 'production',
   devtool: false,
   entry: {
-    main: './src/index.ts',
-    bar: './src/bar.ts',
+    index: './src/index.js?__rslib_entry__',
   },
+  externals: [],
+  externalsType: 'module-import',
   module: {
+    parser: {
+      javascript: {
+        url: false,
+        requireResolve: false,
+        requireDynamic: false,
+        requireAsExpression: false,
+        importMeta: false,
+        importDynamic: false,
+      },
+    },
     rules: [
       {
-        test: /\.ts$/,
+        test: /js$/,
         exclude: [/node_modules/],
         loader: isRspack ? 'builtin:swc-loader' : 'swc-loader',
         options: {
@@ -29,40 +41,41 @@ export default {
             targets: ['chrome >= 107'],
           },
         },
-        // type: 'javascript/auto',
         type: 'javascript/auto',
       },
     ],
   },
   output: {
+    assetModuleFilename: 'static/assets/[name][ext]',
+    // publicPath: 'https://cdn.example.com/assets/',
     clean: true,
-    module: true,
+    // module: true,
     path: path.resolve(
       __filename,
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
-    chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
+    chunkLoading: 'require', // implied to `import` by `output.ChunkFormat`
     chunkFormat: 'module',
     library: {
-      type: 'module',
-      // type: 'modern-module',
+      type: 'modern-module',
     },
   },
   optimization: {
-    // avoidEntryIife: true,
+    // concatenateModules: false,
     concatenateModules: true,
     minimize: false,
-    splitChunks: false,
-    runtimeChunk: false,
+    splitChunks: {
+      chunks: 'async',
+    },
+    moduleIds: 'named',
+    chunkIds: 'named',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
-  stats: {
-    chunkGroups: true,
-  },
   experiments: isRspack
     ? {
+        topLevelAwait: false,
         outputModule: true,
         rspackFuture: {
           bundlerInfo: {

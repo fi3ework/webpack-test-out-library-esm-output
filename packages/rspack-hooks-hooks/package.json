@@ -1,5 +1,6 @@
 {
-  "name": "@monorepo/reexport-ts-type",
+  "name": "@monorepo/ok",
+  "type": "module",
   "private": true,
   "scripts": {
     "build:webpack": "webpack --config rspack.config.mjs",
@@ -8,15 +9,8 @@
     "build:rspack-bundleless": "rspack --config rspack-bundleless.config.mjs"
   },
   "dependencies": {
-    "@rspress/shared": "^1.31.1",
-    "css-loader": "^7.1.2",
     "es-module-lexer": "^1.4.1",
     "esbuild-loader": "^4.0.3",
-    "graceful-fs": "^4.2.11",
-    "lodash": "^4.17.21",
-    "pad-left": "^2.1.0",
-    "ts-loader": "^9.5.1",
-    "unplugin-vue": "^5.2.1",
-    "vue": "^3.5.13"
+    "ts-loader": "^9.5.1"
   }
 }

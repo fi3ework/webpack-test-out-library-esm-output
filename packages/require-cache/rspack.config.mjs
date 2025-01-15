@@ -1,5 +1,6 @@
 import path from 'path'
 import webpack from 'webpack'
+import rspack from '@rspack/core'
 import { fileURLToPath } from 'url'
 
 const isRspack = process.argv[1].split('/').pop().includes('rspack')
@@ -8,6 +9,19 @@ const __dirname = path.dirname(__filename)
 
 const PLUGIN_NAME = 'PreserveDynamicRequireWebpackPlugin'
 
+class EnvironmentPlugin {
+  constructor(env) {
+    this.env = env
+  }
+
+  apply(compiler) {
+    compiler.hooks.afterPlugins.tap(PLUGIN_NAME, (compilation) => {
+      console.log('💇', compilation.options.plugins)
+      // webpack.DefinePlugin.prototype.apply.call(this, compilation)
+    })
+  }
+}
+
 export default {
   target: ['node', 'es2020'],
   mode: 'none',
@@ -15,6 +29,12 @@ export default {
   entry: {
     main: './src/index.js',
   },
+  plugins: [new EnvironmentPlugin()],
+  //   new rspack.DefinePlugin({
+  //     'require.cache': 'require.cache',
+  //     '__webpack_require__.c': 'require.cache',
+  //   }),
+  // ],
   module: {
     rules: [
       {
@@ -56,7 +76,7 @@ export default {
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
     library: {
-      type: 'modern-module',
+      type: 'module',
       // type: 'module',
     },
   },

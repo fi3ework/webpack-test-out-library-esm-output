@@ -6,16 +6,33 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
-  mode: 'none',
+  target: 'node14',
+  mode: 'production',
   devtool: false,
   entry: {
-    main: './src/index.ts',
-    bar: './src/bar.ts',
+    index: './src/index.js',
   },
+  externals: {
+    // external1: 'external111',
+    // external2: 'external222',
+    // external3: 'external333',
+    external4: 'external444',
+    // react: 'react233',
+    // vue: 'vue233',
+    // fs: 'fs233',
+    // angular: 'angular233',
+    // solid: 'solid233',
+  },
+  // externalsType: 'system',
+  // externalsType: 'amd',
+  externalsType: 'commonjs',
+  // externalsType: {
+  //   commonjs: 'import',
+  // },
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\s$/,
         exclude: [/node_modules/],
         loader: isRspack ? 'builtin:swc-loader' : 'swc-loader',
         options: {
@@ -29,41 +46,38 @@ export default {
             targets: ['chrome >= 107'],
           },
         },
-        // type: 'javascript/auto',
         type: 'javascript/auto',
       },
     ],
   },
   output: {
+    // publicPath: 'https://cdn.example.com/assets/',
     clean: true,
-    module: true,
+    // module: true,
     path: path.resolve(
       __filename,
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
-    chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
-    chunkFormat: 'module',
+    // chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
+    // chunkFormat: 'module',
     library: {
-      type: 'module',
-      // type: 'modern-module',
+      type: 'system',
     },
   },
   optimization: {
-    // avoidEntryIife: true,
+    // concatenateModules: false,
     concatenateModules: true,
     minimize: false,
-    splitChunks: false,
-    runtimeChunk: false,
+    moduleIds: 'named',
+    chunkIds: 'named',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
-  stats: {
-    chunkGroups: true,
-  },
   experiments: isRspack
     ? {
-        outputModule: true,
+        // topLevelAwait: false,
+        // outputModule: true,
         rspackFuture: {
           bundlerInfo: {
             force: false,
@@ -71,6 +85,6 @@ export default {
         },
       }
     : {
-        outputModule: true,
+        // outputModule: true,
       },
 }
