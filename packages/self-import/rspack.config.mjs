@@ -5,9 +5,28 @@ const isRspack = process.argv[1].split('/').pop().includes('rspack')
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+class SelfPlugin {
+  apply(compiler) {
+    compiler.hooks.compilation.tap(
+      'SelfPlugin',
+      (compilation, { normalModuleFactory }) => {
+        normalModuleFactory.hooks.beforeResolve.tap(
+          'SelfPlugin',
+          (resolveData) => {
+            console.log('🖖', resolveData)
+            // 访问和修改模块请求信息
+            // console.log(JSON.stringify(resolveData, null, 2))
+          }
+        )
+      }
+    )
+  }
+}
+
 export default {
   mode: 'none',
   devtool: false,
+  plugins: [new SelfPlugin()],
   entry: {
     main: './src/index.mjs',
   },

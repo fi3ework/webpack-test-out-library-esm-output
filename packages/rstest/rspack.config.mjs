@@ -1,6 +1,3 @@
-import rspack from '@rspack/core'
-import webpack from 'webpack'
-import { plugins } from '@swc/core'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -8,13 +5,24 @@ const isRspack = process.argv[1].split('/').pop().includes('rspack')
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+class RstestPlugin {
+  apply(compiler) {
+    compiler.hooks.compilation.tap('RstestPlugin', (compilation) => {
+      compilation.hooks.succeedModule.tap('RstestPlugin', (module) => {
+        const source = module._source.source()
+        console.log('😡 RstestPlugin', source)
+      })
+    })
+  }
+}
+
 export default {
-  mode: 'production',
+  mode: 'none',
+  plugins: [new RstestPlugin()],
   devtool: false,
   entry: {
     main: './src/index.mjs',
   },
-  plugins: [new rspack.experiments.RemoveDuplicateModulesPlugin()],
   module: {
     rules: [
       {
@@ -43,17 +51,16 @@ export default {
       __filename,
       `../dist/${isRspack ? 'rspack' : 'webpack'}-dist`
     ),
-    // chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
-    // chunkFormat: 'module',
+    chunkLoading: 'import', // implied to `import` by `output.ChunkFormat`
+    chunkFormat: 'module',
     library: {
       type: 'modern-module',
     },
   },
   optimization: {
+    avoidEntryIife: true,
     concatenateModules: true,
     minimize: false,
-    nodeEnv: false,
-    splitChunks: false,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],

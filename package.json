@@ -23,12 +23,14 @@
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "webpack": "^5.90.3",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "rollup": "4.30.1"
   },
   "pnpm": {
     "overrides": {
       "webpack": "link:../webpack",
-      "@rspack/core": "link:../rspack/packages/rspack"
+      "@rspack/core": "link:../rspack/packages/rspack",
+      "rollup": "link:../rollup"
     }
   }
 }
