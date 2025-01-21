@@ -2,14 +2,17 @@
   "name": "@monorepo/ok",
   "private": true,
   "scripts": {
-    "build:webpack": "webpack --config rspack.config.mjs",
+    "build:webpack": "webpack --config rspack.config.ts",
     "build:webpack-bundleless": "webpack --config webpack-bundleless.config.mjs",
-    "build:rspack": "rspack --config rspack.config.mjs",
+    "build:rspack": "rspack --config rspack.config.ts",
     "build:rspack-bundleless": "rspack --config rspack-bundleless.config.mjs"
   },
   "dependencies": {
     "es-module-lexer": "^1.4.1",
     "esbuild-loader": "^4.0.3",
     "ts-loader": "^9.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7"
   }
 }

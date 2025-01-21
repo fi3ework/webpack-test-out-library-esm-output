@@ -1,3 +1,0 @@
-leaked
-
-module.exports = 'cjs'
