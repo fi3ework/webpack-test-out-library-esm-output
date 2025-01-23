@@ -17,32 +17,52 @@ Template.renderRuntimeModules = function (runtimeModules, renderContext) {
 
 const modules = new Array<ModuleInfo>()
 
-class RstestPlugin {
-  apply(compiler: Compiler) {
-    compiler.hooks.compilation.tap('plugin', (compilation) => {
-      const hooks =
-        compiler.webpack.javascript.JavascriptModulesPlugin.getCompilationHooks(
-          compilation
-        )
-
-      hooks.renderModuleContent.tap(
-        'plugin',
-        (moduleSource, module, { chunkGraph }) => {
-          const chunkModuleId = chunkGraph.getModuleId(module)
-          const source = moduleSource.source()
-          // modules.push({ source, chunkModuleId })
-          // console.log('🙀', moduleId)
-          // console.log('😷', moduleSource)
-          return moduleSource
-        }
-      )
+class RuntimeModulePlugin {
+  apply(compiler) {
+    // const { RuntimeGlobals } = compiler.webpack
+    compiler.hooks.thisCompilation.tap('CustomPlugin', (compilation) => {
+      compilation.hooks.runtimeModule.tap('CustomPlugin', (module, chunk) => {
+        const originSource = module.source?.source?.toString('utf-8')
+        console.log('😡', module)
+        // module.source.source = Buffer.from(
+        //   `${RuntimeGlobals.publicPath} = "/override/public/path";\n`,
+        //   'utf-8'
+        // )
+      })
     })
   }
 }
 
+// class RstestPlugin {
+//   apply(compiler: Compiler) {
+//     compiler.hooks.compilation.tap('plugin', (compilation) => {
+//       const hooks =
+//         compiler.webpack.javascript.JavascriptModulesPlugin.getCompilationHooks(
+//           compilation
+//         )
+
+//       hooks.renderModuleContent.tap(
+//         'plugin',
+//         (moduleSource, module, { chunkGraph }) => {
+//           const chunkModuleId = chunkGraph.getModuleId(module)
+//           const source = moduleSource.source()
+//           // modules.push({ source, chunkModuleId })
+//           // console.log('🙀', moduleId)
+//           // console.log('😷', moduleSource)
+//           return moduleSource
+//         }
+//       )
+//     })
+//   }
+// }
+
 export default {
   mode: 'none',
-  plugins: [new RstestPlugin()],
+  plugins: [
+    // new RstestPlugin(),
+    //
+    new RuntimeModulePlugin(),
+  ],
   devtool: false,
   entry: {
     main: './src/index.js',
