@@ -1,3 +1,5 @@
-;(function (r, require) {
-  r('./file')
-})(require)
+const aaaa = require
+aaaa('./file')
+
+// ;(function (r) {
+// })(require)

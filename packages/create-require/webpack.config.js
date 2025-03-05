@@ -1,11 +1,11 @@
-import path from 'path'
-import { fileURLToPath } from 'url'
+const path = require('path')
+const { fileURLToPath } = require('url')
 
 const isRspack = process.argv[1].split('/').pop().includes('rspack')
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+// const __filename = fileURLToPath(import.meta.url)
+// const __dirname = path.dirname(__filename)
 
-export default {
+module.exports = {
   mode: 'none',
   target: 'node',
   devtool: false,
