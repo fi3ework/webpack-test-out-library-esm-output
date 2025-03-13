@@ -33,8 +33,8 @@ export default {
     // chunkFormat: 'module',
     // chunkLoading: 'import',
     library: {
-      // type: 'commonjs-static',
-      type: 'commonjs',
+      type: 'commonjs-static',
+      // type: 'commonjs',
     },
   },
   optimization: {
